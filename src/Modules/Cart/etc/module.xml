@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <name>Cart</name>
+    <path>./src/Modules/Cart/module.so</path>
+    <func>Cart</func>
+    <version>1.0.0</version>
+    <dependencies>
+        <dependency>Product</dependency>
+    </dependencies>
+</module>

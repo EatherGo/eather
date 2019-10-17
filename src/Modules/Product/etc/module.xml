@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <name>Product</name>
+    <path>./src/Modules/Product/module.so</path>
+    <func>Product</func>
+    <version>1.0.2</version>
+    <events>
+        <listener for="product_added" call="added" name="add_some_stuff"></listener>
+        <listener for="product_removed" call="removed" name="remove_some_stuff"></listener>
+    </events>
+</module>
