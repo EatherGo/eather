@@ -1,14 +1,16 @@
 package lib
 
 import (
-	"encoding/json"
 	"net/http"
 	"sync"
+
+	"github.com/gorilla/mux"
 )
 
 var (
-	routes    *Routes
+	router    *mux.Router
 	onceRoute sync.Once
+	mr        = mux.NewRouter()
 )
 
 // Routes struct - collection of routes
@@ -17,46 +19,15 @@ type Routes struct {
 }
 
 // GetRouter - return route collection
-func GetRouter() *Routes {
+func GetRouter() *mux.Router {
 	onceRoute.Do(func() {
-		routes = &Routes{make(map[string]func(w http.ResponseWriter, r *http.Request) EatherResponse)}
+		router = mux.NewRouter()
 	})
 
-	return routes
+	return router
 }
 
-// AddGet - add GET type of route
-func (r *Routes) AddGet(name string, f func(w http.ResponseWriter, r *http.Request) EatherResponse) {
-	routes.Collection[name] = f
-	http.Handle("/"+name, JSONResponse(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {}), f, http.MethodGet))
-}
-
-// AddPost - add POST type of route
-func (r *Routes) AddPost(name string, f func(w http.ResponseWriter, r *http.Request) EatherResponse) {
-	routes.Collection[name] = f
-	http.Handle("/"+name, JSONResponse(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {}), f, http.MethodPost))
-}
-
-// JSONResponse to create json response
-func JSONResponse(h http.Handler, f func(w http.ResponseWriter, r *http.Request) EatherResponse, method string) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if method == r.Method {
-
-			h.ServeHTTP(w, r)
-
-			response := f(w, r)
-
-			js, err := json.Marshal(response.Data)
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
-			}
-
-			w.Header().Set("Content-Type", "application/json")
-			w.Write(js)
-		} else {
-			http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
-		}
-
-	})
+// RegisterRoutes - listen for routes
+func RegisterRoutes() {
+	http.Handle("/", router)
 }

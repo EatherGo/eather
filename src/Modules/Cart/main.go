@@ -18,7 +18,10 @@ func main() {
 func (m module) MapRoutes() {
 	router := lib.GetRouter()
 
-	router.AddPost("add-to-cart", controller.AddToCart)
+	router.HandleFunc("/add-to-cart", controller.AddToCart).Methods("POST")
+	// router.AddPost("add-to-cart", controller.AddToCart)
+	// spa := spaHandler{staticPath: "build", indexPath: "index.html"}
+	// router.PathPrefix("/").Handler(spa)
 }
 
 func (m module) Install() {

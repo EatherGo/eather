@@ -28,6 +28,6 @@ func Launch() {
 
 	lib.GetDb()
 	lib.InitVersion()
-	lib.GetRouter()
 	lib.LoadModules()
+	lib.RegisterRoutes()
 }

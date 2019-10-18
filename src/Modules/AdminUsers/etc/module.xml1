@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module>
     <name>AdminUsers</name>
-    <path>./src/Modules/AdminUsers/module.so</path>
     <func>AdminUsers</func>
     <version>1.0.0</version>
 </module>

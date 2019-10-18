@@ -19,10 +19,10 @@ func main() {
 func (m module) MapRoutes() {
 	router := lib.GetRouter()
 
-	router.AddGet("products", controller.Index)
-	router.AddGet("products/", controller.Get)
-	router.AddPost("products/store", controller.Store)
-	router.AddGet("delete/", controller.Delete)
+	router.HandleFunc("/products", controller.Index).Methods("GET")
+	// router.HandleFunc("products/", controller.Get).Methods("GET")
+	router.HandleFunc("/products/store", controller.Store).Methods("POST")
+	router.HandleFunc("/delete/", controller.Delete).Methods("POST")
 }
 
 func (m module) Install() {

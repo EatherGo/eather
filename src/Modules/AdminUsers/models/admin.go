@@ -1,25 +1,25 @@
 package models
 
 import (
-	pmodels "project/src/Modules/Product/models"
-
 	"github.com/jinzhu/gorm"
 )
 
-// Cart main struct
-type Cart struct {
+// AdminUser main struct
+type AdminUser struct {
 	gorm.Model
-	User  string
-	Price float64
+	Username string
+	Password string
+	Email    string
+	Role     string // TODO create roles
 }
 
 // CartItem main struct
-type CartItem struct {
-	gorm.Model
-	Qty       int
-	Price     float64
-	Cart      Cart
-	CartID    uint `gorm:"foreignkey:CartRefer"`
-	Product   pmodels.Product
-	ProductID uint `gorm:"foreignkey:ProductRefer"`
-}
+// type CartItem struct {
+// 	gorm.Model
+// 	Qty       int
+// 	Price     float64
+// 	Cart      Cart
+// 	CartID    uint `gorm:"foreignkey:CartRefer"`
+// 	Product   pmodels.Product
+// 	ProductID uint `gorm:"foreignkey:ProductRefer"`
+// }

@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"project/lib"
@@ -11,16 +12,19 @@ import (
 var db = lib.GetDb()
 
 // Index route
-func Index(w http.ResponseWriter, r *http.Request) lib.EatherResponse {
+func Index(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
 	products := []models.Product{}
 
 	db.Select("price, code").Find(&products)
 
-	return lib.NewResponse(products)
+	// return lib.NewResponse(products)
+	json.NewEncoder(w).Encode(products)
 }
 
 // Get one product
-func Get(w http.ResponseWriter, r *http.Request) lib.EatherResponse {
+func Get(w http.ResponseWriter, r *http.Request) {
 	product := models.Product{}
 
 	id, err := strconv.Atoi(r.URL.Path[len("/products/"):])
@@ -30,11 +34,12 @@ func Get(w http.ResponseWriter, r *http.Request) lib.EatherResponse {
 
 	db.Select("price, code").Where("code = ?", id).First(&product)
 
-	return lib.NewResponse(product)
+	// return lib.NewResponse(product)
+	json.NewEncoder(w).Encode(product)
 }
 
 // Store route
-func Store(w http.ResponseWriter, r *http.Request) lib.EatherResponse {
+func Store(w http.ResponseWriter, r *http.Request) {
 	code := r.FormValue("code")
 	price := r.FormValue("price")
 	priceInt, _ := strconv.ParseFloat(price, 10)
@@ -49,11 +54,12 @@ func Store(w http.ResponseWriter, r *http.Request) lib.EatherResponse {
 	eventer.Emmit("product_added")
 	eventer.Emmit("product_removed")
 
-	return lib.NewResponse(product)
+	// return lib.NewResponse(product)
+	json.NewEncoder(w).Encode(product)
 }
 
 // Delete route
-func Delete(w http.ResponseWriter, r *http.Request) lib.EatherResponse {
+func Delete(w http.ResponseWriter, r *http.Request) {
 	products := []models.Product{}
 
 	id := r.URL.Path[len("/delete/"):]
@@ -66,5 +72,6 @@ func Delete(w http.ResponseWriter, r *http.Request) lib.EatherResponse {
 
 	db.Select("price, code").Find(&products)
 
-	return lib.NewResponse(products)
+	// return lib.NewResponse(products)
+	json.NewEncoder(w).Encode(products)
 }
