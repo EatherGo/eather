@@ -13,7 +13,6 @@ const ModulesDir = "./src/Modules"
 type ModuleXML struct {
 	XMLName      xml.Name     `xml:"module"`
 	Name         string       `xml:"name"`
-	Path         string       `xml:"path"`
 	Func         string       `xml:"func"`
 	Version      string       `xml:"version"`
 	Events       Events       `xml:"events"`
@@ -34,6 +33,7 @@ type Listener struct {
 	Name    string   `xml:"name,attr"`
 }
 
+// Dependencies struct - dependencies xml interface
 type Dependencies struct {
 	XMLName      xml.Name `xml:"dependencies"`
 	Dependencies []string `xml:"dependency"`

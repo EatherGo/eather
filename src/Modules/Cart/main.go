@@ -9,11 +9,6 @@ import (
 
 type module struct{}
 
-type cartInterface interface {
-	interfaces.Module
-	Print()
-}
-
 var db = lib.GetDb()
 
 func main() {

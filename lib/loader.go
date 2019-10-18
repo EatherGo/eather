@@ -35,7 +35,12 @@ func getLlistOfModuleConfigs(files []os.FileInfo) (moduleConfigs map[string]Modu
 	moduleConfigs = make(map[string]Module)
 
 	for _, f := range files {
-		module := loadModule(f.Name())
+		module, err := loadModule(f.Name())
+
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
 
 		moduleConfigs[module.Name] = module
 	}
@@ -59,22 +64,19 @@ func callFunc(events map[string]func(), name string) func() {
 }
 
 // loadModule will load module by name
-func loadModule(name string) Module {
+func loadModule(name string) (module Module, err error) {
 
 	file := fmt.Sprintf("%s/%s/etc/module.xml", interfaces.ModulesDir, name)
 
 	xmlFile, err := os.Open(file)
 
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		return
 	}
 
 	defer xmlFile.Close()
 
 	byteValue, _ := ioutil.ReadAll(xmlFile)
-
-	var module Module
 
 	err = xml.Unmarshal(byteValue, &module)
 	if err != nil {
@@ -82,11 +84,22 @@ func loadModule(name string) Module {
 		os.Exit(1)
 	}
 
-	return module
+	return
+}
+
+func (m Module) getPath(inclFilename bool) string {
+
+	path := interfaces.ModulesDir + "/" + m.Name + "/"
+
+	if inclFilename {
+		return path + "module.so"
+	}
+
+	return path
 }
 
 func (m Module) init() interfaces.Module {
-	plug, err := plugin.Open(m.Path)
+	plug, err := plugin.Open(m.getPath(true))
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -162,22 +175,22 @@ func (m Module) processModule() {
 }
 
 func (m Module) build() {
-	path := m.Path
-	name := m.Name
+	fullPath := m.getPath(true)
+
 	if os.Getenv("REBUILD") == "1" {
-		rmcmd := exec.Command("rm", interfaces.ModulesDir+"/"+name+"/module.so")
+		rmcmd := exec.Command("rm", fullPath)
 		rmcmd.Run()
 	}
 
-	if _, err := os.Stat(path); err != nil {
-		fmt.Println("Module " + name + " is not builded. Building...")
+	if _, err := os.Stat(fullPath); err != nil {
+		fmt.Println("Module " + m.Name + " is not builded. Building...")
 
-		cmd := exec.Command("go", "build", "-buildmode=plugin", "-o", interfaces.ModulesDir+"/"+name+"/module.so", interfaces.ModulesDir+"/"+name+"/")
+		cmd := exec.Command("go", "build", "-buildmode=plugin", "-o", fullPath, m.getPath(false))
 		if err := cmd.Run(); err != nil {
 			log.Fatal(err)
 		}
 
-		fmt.Println("Module " + name + " was builded")
+		fmt.Println("Module " + m.Name + " was builded")
 	}
 }
 

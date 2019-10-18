@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module>
     <name>Product</name>
-    <path>./src/Modules/Product/module.so</path>
     <func>Product</func>
     <version>1.0.2</version>
     <events>
