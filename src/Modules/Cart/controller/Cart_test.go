@@ -3,7 +3,6 @@ package controller
 import (
 	"net/http"
 	"net/http/httptest"
-	"project/lib"
 	"testing"
 )
 

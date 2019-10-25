@@ -2,6 +2,7 @@ package lib
 
 import (
 	"fmt"
+	"project/lib/interfaces"
 	"sync"
 )
 
@@ -18,7 +19,7 @@ type events interface {
 
 type event struct {
 	Name  string
-	Fires map[string]func()
+	Fires map[string]interfaces.EventFunc
 }
 
 // Events struct - collection of events
@@ -27,13 +28,13 @@ type Events struct {
 }
 
 // Add event to the collection
-func (r *Events) Add(name string, f func(), call string) {
+func (r *Events) Add(name string, f interfaces.EventFunc, call string) {
 	fmt.Println("Adding event " + name + " to call " + call)
 	if val, ok := r.Collection[name]; ok {
 		val.Fires[call] = f
 		r.Collection[name] = val
 	} else {
-		fires := make(map[string]func())
+		fires := make(map[string]interfaces.EventFunc)
 		fires[call] = f
 		e := event{Name: name, Fires: fires}
 		r.Collection[name] = e
@@ -41,10 +42,10 @@ func (r *Events) Add(name string, f func(), call string) {
 }
 
 // Emmit the event from the collection
-func (r *Events) Emmit(name string) {
+func (r *Events) Emmit(name string, data ...interface{}) {
 	if val, ok := r.Collection[name]; ok {
 		for _, fire := range val.Fires {
-			go fire()
+			go fire(data)
 		}
 	}
 }

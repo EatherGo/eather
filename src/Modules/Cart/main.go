@@ -33,8 +33,8 @@ func (m module) Upgrade(version string) {
 
 }
 
-func (m module) GetEventFuncs() map[string]func() {
-	return make(map[string]func())
+func (m module) GetEventFuncs() map[string]interfaces.EventFunc {
+	return make(map[string]interfaces.EventFunc)
 }
 
 // Cart to export

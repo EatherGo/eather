@@ -39,9 +39,12 @@ type Dependencies struct {
 	Dependencies []string `xml:"dependency"`
 }
 
+// EventFunc type of events func
+type EventFunc func(data ...interface{})
+
 // Module interface
 type Module interface {
-	GetEventFuncs() map[string]func()
+	GetEventFuncs() map[string]EventFunc
 	Install()
 	Upgrade(version string)
 	MapRoutes()

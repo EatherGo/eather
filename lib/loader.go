@@ -52,12 +52,12 @@ func orderByPriorities(moduleConfigs map[string]Module) {
 	}
 }
 
-func callFunc(events map[string]func(), name string) func() {
+func callFunc(events map[string]interfaces.EventFunc, name string) interfaces.EventFunc {
 	if val, ok := events[name]; ok {
 		return val
 	}
 
-	return func() {}
+	return func(data ...interface{}) {}
 }
 
 // loadModule will load module by name

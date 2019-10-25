@@ -3,7 +3,7 @@
     <name>Cart</name>
     <func>Cart</func>
     <version>1.0.1</version>
-    <!-- <dependencies>
+    <dependencies>
         <dependency>Product</dependency>
-    </dependencies> -->
+    </dependencies>
 </module>

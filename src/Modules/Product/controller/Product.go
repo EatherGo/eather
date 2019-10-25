@@ -7,6 +7,8 @@ import (
 	"project/lib"
 	"project/src/Modules/Product/models"
 	"strconv"
+
+	"github.com/gorilla/mux"
 )
 
 var db = lib.GetDb()
@@ -19,12 +21,13 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 	db.Select("price, code").Find(&products)
 
-	// return lib.NewResponse(products)
 	json.NewEncoder(w).Encode(products)
 }
 
 // Get one product
 func Get(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
 	product := models.Product{}
 
 	id, err := strconv.Atoi(r.URL.Path[len("/products/"):])
@@ -34,12 +37,17 @@ func Get(w http.ResponseWriter, r *http.Request) {
 
 	db.Select("price, code").Where("code = ?", id).First(&product)
 
-	// return lib.NewResponse(product)
 	json.NewEncoder(w).Encode(product)
 }
 
 // Store route
 func Store(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	vars := mux.Vars(r)
+
+	fmt.Println(vars)
+
 	code := r.FormValue("code")
 	price := r.FormValue("price")
 	priceInt, _ := strconv.ParseFloat(price, 10)
@@ -47,31 +55,24 @@ func Store(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(code)
 	fmt.Println(priceInt)
 	product := models.Product{Code: code, Price: priceInt}
-	db.Create(&product)
+	if dbr := db.Create(&product); dbr.Error != nil {
+		json.NewEncoder(w).Encode(map[string]string{"Error": "Product already exists"})
+		return
+	}
 
-	eventer := lib.GetEvents()
+	lib.GetEvents().Emmit("product_added", map[string]int{"product_code": 50})
 
-	eventer.Emmit("product_added")
-	eventer.Emmit("product_removed")
-
-	// return lib.NewResponse(product)
 	json.NewEncoder(w).Encode(product)
 }
 
 // Delete route
 func Delete(w http.ResponseWriter, r *http.Request) {
-	products := []models.Product{}
+	w.Header().Set("Content-Type", "application/json")
+	vars := mux.Vars(r)
 
-	id := r.URL.Path[len("/delete/"):]
-	num, err := strconv.Atoi(id)
-	if err != nil {
-		fmt.Println(err)
-	} else {
-		fmt.Println(num)
-	}
+	db.Select("code").Where("code = ?", vars["product_code"]).Delete(models.Product{})
 
-	db.Select("price, code").Find(&products)
+	lib.GetEvents().Emmit("product_removed", vars["product_code"])
 
-	// return lib.NewResponse(products)
-	json.NewEncoder(w).Encode(products)
+	json.NewEncoder(w).Encode("Product " + vars["product_code"] + " was removed")
 }
