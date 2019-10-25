@@ -3,6 +3,7 @@ package main
 import (
 	"project/lib"
 	"project/lib/interfaces"
+	"project/src/Modules/AdminUsers/models"
 )
 
 type module struct{}
@@ -20,16 +21,15 @@ func (m module) MapRoutes() {
 }
 
 func (m module) Install() {
-	// db.AutoMigrate(&models.Cart{}, &models.CartItem{})
-	// db.Model(&models.CartItem{}).AddForeignKey("cart_id", "carts(id)", "RESTRICT", "RESTRICT").AddForeignKey("product_id", "products(id)", "RESTRICT", "RESTRICT")
+	db.AutoMigrate(&models.AdminUser{})
 }
 
 func (m module) Upgrade(version string) {
 
 }
 
-func (m module) GetEventFuncs() map[string]func() {
-	return make(map[string]func())
+func (m module) GetEventFuncs() map[string]interfaces.EventFunc {
+	return make(map[string]interfaces.EventFunc)
 }
 
 // AdminUsers callable func

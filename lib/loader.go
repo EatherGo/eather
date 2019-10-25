@@ -16,16 +16,22 @@ var sortedModules []Module
 
 // LoadModules will load all modules inside modulesDir directory
 func LoadModules() {
-	files, err := ioutil.ReadDir(interfaces.ModulesDir)
-	if err != nil {
-		log.Fatal(err)
-	}
+	files := GetListOfModuleFolders()
 
 	orderByPriorities(getLlistOfModuleConfigs(files))
 
 	for _, m := range sortedModules {
 		m.processModule()
 	}
+}
+
+func GetListOfModuleFolders() []os.FileInfo {
+	files, err := ioutil.ReadDir(interfaces.ModulesDir)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return files
 }
 
 func getLlistOfModuleConfigs(files []os.FileInfo) (moduleConfigs map[string]Module) {

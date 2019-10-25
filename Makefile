@@ -1,4 +1,4 @@
-all: eahter
+all: eather application
 
 dep:
 	@echo "Install dependencies"
@@ -7,18 +7,18 @@ dep:
 test:
 	go test ./...
 
-eahter:
+eather: dep
 	@echo "Building eather console"
-	go build ./eather/main.go
-	cp
-		
-client: protoc
-	@echo "Building client"
-	go build -o client \
-		./src/client
+	go build -o eather \
+		./console/main.go
 
+application: dep
+	@echo "Building eather app"
+	go build -o eatherapp \
+		./app/main.go
+		
 clean:
 	go clean ./...
-	rm -f server client
+	rm -f eather eatherapp
 
-.PHONY: client server protoc dep
+.PHONY: eather application dep

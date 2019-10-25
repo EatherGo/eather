@@ -3,3 +3,6 @@ main
 /vendor
 *.so
 .env
+eatherapp
+eather
+/gen/*
