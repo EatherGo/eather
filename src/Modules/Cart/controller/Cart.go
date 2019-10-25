@@ -1,11 +1,11 @@
 package controller
 
 import (
+	"eather/lib"
+	"eather/src/Modules/Cart/models"
+	pmodels "eather/src/Modules/Product/models"
 	"encoding/json"
 	"net/http"
-	"project/lib"
-	"project/src/Modules/Cart/models"
-	pmodels "project/src/Modules/Product/models"
 )
 
 var db = lib.GetDb()

@@ -1,13 +1,13 @@
 package main
 
 import (
+	"eather/lib"
+	"eather/lib/interfaces"
 	"flag"
 	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
-	"project/lib"
-	"project/lib/interfaces"
 )
 
 var (

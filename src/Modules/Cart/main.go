@@ -1,10 +1,10 @@
 package main
 
 import (
-	"project/lib"
-	"project/lib/interfaces"
-	"project/src/Modules/Cart/controller"
-	"project/src/Modules/Cart/models"
+	"eather/lib"
+	"eather/lib/interfaces"
+	"eather/src/Modules/Cart/controller"
+	"eather/src/Modules/Cart/models"
 )
 
 type module struct{}

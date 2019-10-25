@@ -1,11 +1,11 @@
 package controller
 
 import (
+	"eather/lib"
+	"eather/src/Modules/Product/models"
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"project/lib"
-	"project/src/Modules/Product/models"
 	"strconv"
 
 	"github.com/gorilla/mux"

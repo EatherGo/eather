@@ -1,8 +1,8 @@
 package main
 
 import (
+	"eather/lib/interfaces"
 	"fmt"
-	"project/lib/interfaces"
 	"time"
 )
 

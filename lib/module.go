@@ -1,12 +1,12 @@
 package lib
 
 import (
+	"eather/lib/interfaces"
 	"fmt"
 	"log"
 	"os"
 	"os/exec"
 	"plugin"
-	"project/lib/interfaces"
 
 	"github.com/jinzhu/gorm"
 )

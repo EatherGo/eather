@@ -1,9 +1,9 @@
 package main
 
 import (
-	"project/lib"
-	"project/lib/interfaces"
-	"project/src/Modules/AdminUsers/models"
+	"eather/lib"
+	"eather/lib/interfaces"
+	"eather/src/Modules/AdminUsers/models"
 )
 
 type module struct{}

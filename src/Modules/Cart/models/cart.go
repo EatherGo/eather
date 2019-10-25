@@ -1,7 +1,7 @@
 package models
 
 import (
-	pmodels "project/src/Modules/Product/models"
+	pmodels "eather/src/Modules/Product/models"
 
 	"github.com/jinzhu/gorm"
 )

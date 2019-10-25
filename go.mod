@@ -1,4 +1,4 @@
-module project
+module eather
 
 go 1.13
 

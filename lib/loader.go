@@ -1,12 +1,12 @@
 package lib
 
 import (
+	"eather/lib/interfaces"
 	"encoding/xml"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
-	"project/lib/interfaces"
 )
 
 // Module of type ModuleXML

@@ -1,8 +1,8 @@
 package lib
 
 import (
+	"eather/lib/interfaces"
 	"fmt"
-	"project/lib/interfaces"
 	"sync"
 )
 

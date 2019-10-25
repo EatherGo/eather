@@ -1,11 +1,11 @@
 package main
 
 import (
-	"project/lib"
-	"project/lib/interfaces"
+	"eather/lib"
+	"eather/lib/interfaces"
 
-	"project/src/Modules/Product/controller"
-	"project/src/Modules/Product/models"
+	"eather/src/Modules/Product/controller"
+	"eather/src/Modules/Product/models"
 )
 
 type module struct{}
