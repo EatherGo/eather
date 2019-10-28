@@ -1,11 +1,11 @@
 package main
 
 import (
+	"eather/lib"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
-	"eather/lib"
 
 	"time"
 
@@ -44,5 +44,6 @@ func launch() {
 	lib.GetDb()
 	lib.InitVersion()
 	lib.LoadModules()
+	lib.GetRouter()
 	lib.RegisterRoutes()
 }

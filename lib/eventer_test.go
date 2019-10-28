@@ -9,11 +9,11 @@ import (
 var e = GetEvents()
 
 func TestEventsCanBeAdded(t *testing.T) {
-	assert.Equal(t, 0, len(e.Collection), "Event collection should be empty")
+	assert.Equal(t, 0, len(e.GetCollection()), "Event collection should be empty")
 
 	e.Add("test", func(data ...interface{}) {}, "testing")
 
-	assert.Equal(t, 1, len(e.Collection), "Event collection should have only 1 event")
+	assert.Equal(t, 1, len(e.GetCollection()), "Event collection should have only 1 event")
 }
 
 func TestEventsCanBeAddedOnlyOnce(t *testing.T) {
@@ -21,7 +21,7 @@ func TestEventsCanBeAddedOnlyOnce(t *testing.T) {
 	e.Add("test", func(data ...interface{}) {}, "testing")
 	e.Add("test", func(data ...interface{}) {}, "testing")
 
-	assert.Equal(t, 1, len(e.Collection), "Event collection should have only 1 event")
+	assert.Equal(t, 1, len(e.GetCollection()), "Event collection should have only 1 event")
 }
 
 func TestEventsCanBeRemoved(t *testing.T) {
@@ -29,5 +29,5 @@ func TestEventsCanBeRemoved(t *testing.T) {
 
 	e.Remove("test")
 
-	assert.Equal(t, 0, len(e.Collection), "Event collection be empty")
+	assert.Equal(t, 0, len(e.GetCollection()), "Event collection be empty")
 }
