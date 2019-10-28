@@ -2,7 +2,7 @@ package main
 
 import (
 	"eather/lib"
-	"eather/lib/interfaces"
+	"eather/lib/types"
 	"eather/src/Modules/Cart/controller"
 	"eather/src/Modules/Cart/models"
 )
@@ -30,12 +30,12 @@ func (m module) Upgrade(version string) {
 
 }
 
-func (m module) GetEventFuncs() map[string]interfaces.EventFunc {
-	return make(map[string]interfaces.EventFunc)
+func (m module) GetEventFuncs() map[string]types.EventFunc {
+	return make(map[string]types.EventFunc)
 }
 
 // Cart to export
-func Cart() (f interfaces.Module, err error) {
+func Cart() (f types.Module, err error) {
 	f = module{}
 	return
 }

@@ -1,7 +1,7 @@
 package lib
 
 import (
-	"eather/lib/interfaces"
+	"eather/lib/types"
 	"sync"
 )
 
@@ -12,19 +12,19 @@ var (
 
 // RegistryInterface - interface for a registry
 type RegistryInterface interface {
-	Get(name string) interfaces.Module
-	Add(object interfaces.Module, name string)
+	Get(name string) types.Module
+	Add(object types.Module, name string)
 	Contains(name string) bool
 	Remove(name string)
 }
 
 // Registry struct - collection for registry
 type Registry struct {
-	Collection map[string]interfaces.Module
+	Collection map[string]types.Module
 }
 
 // Get module from registry by name
-func (r *Registry) Get(name string) interfaces.Module {
+func (r *Registry) Get(name string) types.Module {
 	if val, ok := r.Collection[name]; ok {
 		return val
 	}
@@ -33,7 +33,7 @@ func (r *Registry) Get(name string) interfaces.Module {
 }
 
 // Add module to the registry object
-func (r *Registry) Add(object interfaces.Module, name string) {
+func (r *Registry) Add(object types.Module, name string) {
 	r.Collection[name] = object
 }
 
@@ -54,7 +54,7 @@ func GetRegistry() *Registry {
 
 	once.Do(func() {
 
-		instance = &Registry{make(map[string]interfaces.Module)}
+		instance = &Registry{make(map[string]types.Module)}
 
 	})
 

@@ -1,12 +1,12 @@
 package main
 
 import (
-	"eather/lib/interfaces"
+	"eather/lib/types"
 	"fmt"
 	"time"
 )
 
-var eventFuncs = map[string]interfaces.EventFunc{"added": added}
+var eventFuncs = map[string]types.EventFunc{"added": added}
 
 var added = func(data ...interface{}) {
 	fmt.Println(data)

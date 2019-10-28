@@ -1,7 +1,7 @@
 package lib
 
 import (
-	"eather/lib/interfaces"
+	"eather/lib/types"
 	"fmt"
 	"log"
 	"os"
@@ -45,7 +45,7 @@ func (m Module) UpdateVersion() {
 
 func (m Module) getPath(inclFilename bool) string {
 
-	path := interfaces.ModulesDir + "/" + m.Name + "/"
+	path := types.ModulesDir + "/" + m.Name + "/"
 
 	if inclFilename {
 		return path + "module.so"
@@ -54,7 +54,7 @@ func (m Module) getPath(inclFilename bool) string {
 	return path
 }
 
-func (m Module) init() interfaces.Module {
+func (m Module) init() types.Module {
 	plug, err := plugin.Open(m.getPath(true))
 	if err != nil {
 		fmt.Println(err)
@@ -67,9 +67,9 @@ func (m Module) init() interfaces.Module {
 		os.Exit(1)
 	}
 
-	mod, _ := lookup.(func() (interfaces.Module, error))()
+	mod, _ := lookup.(func() (types.Module, error))()
 
-	module, ok := mod.(interfaces.Module)
+	module, ok := mod.(types.Module)
 	if !ok {
 		fmt.Println("unexpected type from module symbol")
 		os.Exit(1)

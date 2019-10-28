@@ -1,7 +1,7 @@
 package lib
 
 import (
-	"eather/lib/interfaces"
+	"eather/lib/types"
 	"encoding/xml"
 	"fmt"
 	"io/ioutil"
@@ -10,7 +10,7 @@ import (
 )
 
 // Module of type ModuleXML
-type Module interfaces.ModuleXML
+type Module types.ModuleXML
 
 var sortedModules []Module
 
@@ -26,7 +26,7 @@ func LoadModules() {
 }
 
 func GetListOfModuleFolders() []os.FileInfo {
-	files, err := ioutil.ReadDir(interfaces.ModulesDir)
+	files, err := ioutil.ReadDir(types.ModulesDir)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -58,7 +58,7 @@ func orderByPriorities(moduleConfigs map[string]Module) {
 	}
 }
 
-func callFunc(events map[string]interfaces.EventFunc, name string) interfaces.EventFunc {
+func callFunc(events map[string]types.EventFunc, name string) types.EventFunc {
 	if val, ok := events[name]; ok {
 		return val
 	}
@@ -69,7 +69,7 @@ func callFunc(events map[string]interfaces.EventFunc, name string) interfaces.Ev
 // loadModule will load module by name
 func loadModule(name string) (module Module, err error) {
 
-	file := fmt.Sprintf("%s/%s/etc/module.xml", interfaces.ModulesDir, name)
+	file := fmt.Sprintf("%s/%s/etc/module.xml", types.ModulesDir, name)
 
 	xmlFile, err := os.Open(file)
 
@@ -90,13 +90,14 @@ func loadModule(name string) (module Module, err error) {
 	return
 }
 
-func syncVersions(module Module, mod interfaces.Module) {
+func syncVersions(module Module, mod types.Module) {
 	version := module.GetVersion()
 
 	if version == "" {
 		fmt.Println("Version not found. Installing " + module.Name + " version " + module.Version + "...")
 		mod.Install()
 		module.UpdateVersion()
+		fmt.Println(module.Name + " was installed")
 		return
 	}
 
@@ -104,5 +105,6 @@ func syncVersions(module Module, mod interfaces.Module) {
 		fmt.Println("Upgrading " + module.Name + " to version " + module.Version + "...")
 		module.UpdateVersion()
 		mod.Upgrade(module.Version)
+		fmt.Println(module.Name + " was upgraded")
 	}
 }

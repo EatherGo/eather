@@ -2,7 +2,7 @@ package main
 
 import (
 	"eather/lib"
-	"eather/lib/interfaces"
+	"eather/lib/types"
 
 	"eather/src/Modules/Product/controller"
 	"eather/src/Modules/Product/models"
@@ -33,12 +33,12 @@ func (m module) Upgrade(version string) {
 
 }
 
-func (m module) GetEventFuncs() map[string]interfaces.EventFunc {
+func (m module) GetEventFuncs() map[string]types.EventFunc {
 	return eventFuncs
 }
 
 // Product to export
-func Product() (f interfaces.Module, err error) {
+func Product() (f types.Module, err error) {
 	f = module{}
 	return
 }

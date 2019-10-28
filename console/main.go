@@ -1,77 +1,25 @@
 package main
 
 import (
-	"eather/lib"
-	"eather/lib/interfaces"
 	"flag"
 	"fmt"
-	"os"
-	"os/exec"
-	"path/filepath"
 )
 
 var (
-	generate      = flag.Bool("generate", false, "Generate structs")
-	generateClean = flag.Bool("cleanGen", false, "Clean generated structs")
+	generate = flag.Bool("admin", false, "Create admin user")
 )
 
 func main() {
 	flag.Parse()
 
 	if *generate {
-		generator()
-		return
-	}
-
-	if *generateClean {
-		generatorClean()
+		createAdmin()
 		return
 	}
 
 	fmt.Println("Nothing to do")
 }
 
-const genFolder = "./gen/"
+func createAdmin() {
 
-func generator() {
-	files := lib.GetListOfModuleFolders()
-
-	for _, f := range files {
-		name := f.Name()
-
-		modelsDir := fmt.Sprintf("%s/%s/models/", interfaces.ModulesDir, name)
-
-		filepath.Walk(modelsDir, copyToGen)
-
-	}
-}
-
-func generatorClean() {
-	filepath.Walk("./"+genFolder+"models/", rmGenModels)
-}
-
-func copyToGen(path string, info os.FileInfo, err error) error {
-	if !info.IsDir() {
-		rmcmd := exec.Command("cp", "./"+path, genFolder+"models/.")
-
-		err := rmcmd.Run()
-		if err != nil {
-			fmt.Println(err)
-		}
-	}
-
-	return err
-}
-
-func rmGenModels(path string, info os.FileInfo, err error) error {
-	if !info.IsDir() {
-		rmcmd := exec.Command("rm", "./"+path)
-
-		err := rmcmd.Run()
-		if err != nil {
-			fmt.Println(err)
-		}
-	}
-
-	return err
 }

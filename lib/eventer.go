@@ -1,7 +1,7 @@
 package lib
 
 import (
-	"eather/lib/interfaces"
+	"eather/lib/types"
 	"fmt"
 	"sync"
 )
@@ -19,7 +19,7 @@ type events interface {
 
 type event struct {
 	Name  string
-	Fires map[string]interfaces.EventFunc
+	Fires map[string]types.EventFunc
 }
 
 // Events struct - collection of events
@@ -28,13 +28,13 @@ type Events struct {
 }
 
 // Add event to the collection
-func (r *Events) Add(name string, f interfaces.EventFunc, call string) {
+func (r *Events) Add(name string, f types.EventFunc, call string) {
 	fmt.Println("Adding event " + name + " to call " + call)
 	if val, ok := r.Collection[name]; ok {
 		val.Fires[call] = f
 		r.Collection[name] = val
 	} else {
-		fires := make(map[string]interfaces.EventFunc)
+		fires := make(map[string]types.EventFunc)
 		fires[call] = f
 		e := event{Name: name, Fires: fires}
 		r.Collection[name] = e
