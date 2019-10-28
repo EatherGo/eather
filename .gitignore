@@ -6,4 +6,4 @@ main
 eatherapp
 eather
 /gen/*
-/src/*
+/src/Modules/*
