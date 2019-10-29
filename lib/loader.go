@@ -16,7 +16,7 @@ var sortedModules []Module
 
 // LoadModules will load all modules inside modulesDir directory
 func LoadModules() {
-	files := GetListOfModuleFolders()
+	files := getListOfModuleFolders()
 
 	orderByPriorities(getLlistOfModuleConfigs(files))
 
@@ -25,7 +25,7 @@ func LoadModules() {
 	}
 }
 
-func GetListOfModuleFolders() []os.FileInfo {
+func getListOfModuleFolders() []os.FileInfo {
 	files, err := ioutil.ReadDir(types.ModulesDir)
 	if err != nil {
 		log.Fatal(err)
@@ -66,7 +66,6 @@ func callFunc(events map[string]types.EventFunc, name string) types.EventFunc {
 	return func(data ...interface{}) {}
 }
 
-// loadModule will load module by name
 func loadModule(name string) (module Module, err error) {
 
 	file := fmt.Sprintf("%s/%s/etc/module.xml", types.ModulesDir, name)
