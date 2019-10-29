@@ -50,7 +50,7 @@ func (r *Registry) Remove(name string) {
 }
 
 // GetRegistry load registry collection
-func GetRegistry() *Registry {
+func GetRegistry() RegistryInterface {
 
 	once.Do(func() {
 
