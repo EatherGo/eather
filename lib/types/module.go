@@ -17,6 +17,17 @@ type ModuleXML struct {
 	Dependencies Dependencies `xml:"dependencies"`
 }
 
+type ModulesConfigXML struct {
+	XMLName xml.Name       `xml:"modules"`
+	Modules []ModuleConfig `xml:"module"`
+}
+
+type ModuleConfig struct {
+	XMLName xml.Name `xml:"module"`
+	Name    string   `xml:"name"`
+	Enabled bool     `xml:"enabled"`
+}
+
 // Module interface
 type Module interface {
 	GetEventFuncs() map[string]EventFunc

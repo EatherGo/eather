@@ -12,13 +12,18 @@ import (
 // Module of type ModuleXML
 type Module types.ModuleXML
 
-var sortedModules []Module
+var (
+	sortedModules []Module
+	modConf       map[string]bool
+)
 
 // LoadModules will load all modules inside modulesDir directory
 func LoadModules() {
 	files := getListOfModuleFolders()
 
-	orderByPriorities(getLlistOfModuleConfigs(files))
+	modConf = loadModuleConf()
+
+	orderByPriorities(getListOfModuleConfigs(files))
 
 	for _, m := range sortedModules {
 		m.processModule()
@@ -34,7 +39,7 @@ func getListOfModuleFolders() []os.FileInfo {
 	return files
 }
 
-func getLlistOfModuleConfigs(files []os.FileInfo) (moduleConfigs map[string]Module) {
+func getListOfModuleConfigs(files []os.FileInfo) (moduleConfigs map[string]Module) {
 	moduleConfigs = make(map[string]Module)
 
 	for _, f := range files {
@@ -45,7 +50,9 @@ func getLlistOfModuleConfigs(files []os.FileInfo) (moduleConfigs map[string]Modu
 			continue
 		}
 
-		moduleConfigs[module.Name] = module
+		if modConf[module.Name] {
+			moduleConfigs[module.Name] = module
+		}
 	}
 
 	return
@@ -84,6 +91,36 @@ func loadModule(name string) (module Module, err error) {
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
+	}
+
+	return
+}
+
+func loadModuleConf() (modConfigs map[string]bool) {
+
+	file := "./app/modules.xml"
+
+	xmlFile, err := os.Open(file)
+
+	if err != nil {
+		return
+	}
+
+	defer xmlFile.Close()
+
+	byteValue, _ := ioutil.ReadAll(xmlFile)
+
+	module := types.ModulesConfigXML{}
+
+	err = xml.Unmarshal(byteValue, &module)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	modConfigs = map[string]bool{}
+	for _, c := range module.Modules {
+		modConfigs[c.Name] = c.Enabled
 	}
 
 	return
