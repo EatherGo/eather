@@ -1,14 +1,23 @@
 package lib
 
+import (
+	"encoding/json"
+	"net/http"
+)
+
 // EatherResponse struct - customize response for routes
 type EatherResponse struct {
-	Type string
-	Data interface{}
+	Status  bool
+	Message string
+	Data    Response
 }
 
-// NewResponse - create new response
-func NewResponse(data interface{}) EatherResponse {
-	response := EatherResponse{Type: "JSON", Data: data}
+// Response set response type
+type Response map[string]interface{}
 
-	return response
+// SendJSONResponse will set type to application/json and send to response
+func SendJSONResponse(w http.ResponseWriter, r EatherResponse) {
+	w.Header().Set("Content-Type", "application/json")
+
+	json.NewEncoder(w).Encode(r)
 }
