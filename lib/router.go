@@ -2,6 +2,7 @@ package lib
 
 import (
 	"net/http"
+	"os"
 	"sync"
 
 	"github.com/gorilla/mux"
@@ -33,7 +34,7 @@ func GetRouter() *mux.Router {
 // RegisterRoutes - listen for routes
 func RegisterRoutes() {
 	corsOpts := cors.New(cors.Options{
-		AllowedOrigins: []string{"http://localhost:8080"}, //you service is available and allowed for this base url
+		AllowedOrigins: []string{os.Getenv("FRONTEND_URL")}, //you service is available and allowed for this base url
 		AllowedMethods: []string{
 			http.MethodGet, //http methods for your app
 			http.MethodPost,
