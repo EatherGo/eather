@@ -3,9 +3,11 @@ package lib
 import (
 	"os"
 	"sync"
+	"time"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql" // Loading mysql dialects
+	uuid "github.com/satori/go.uuid"
 )
 
 var (
@@ -41,4 +43,19 @@ func initDb() *Database {
 	}
 
 	return &Database{db}
+}
+
+// Base contains common columns for all tables.
+type Base struct {
+	ID        uuid.UUID `gorm:"primary_key"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt *time.Time `sql:"index"`
+}
+
+// BeforeCreate will set a UUID rather than numeric ID.
+func (base *Base) BeforeCreate(scope *gorm.Scope) error {
+	uuid := uuid.NewV4()
+
+	return scope.SetColumn("ID", uuid)
 }
