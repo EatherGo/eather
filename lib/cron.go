@@ -6,16 +6,25 @@ import (
 
 // Cron structure
 type Cron struct {
-	spec string
-	cmd  func()
+	Spec Spec
+	Cmd  Cmd
 }
+
+// Spec for specification when cron should be running
+type Spec string
+
+// Cmd function of cron
+type Cmd func()
+
+// CronList structure of list of crons
+type CronList []Cron
 
 // StartCrons will start crons in background
 func StartCrons(cronList []Cron) {
 	c := cron.New()
 
 	for _, cr := range cronList {
-		c.AddFunc(cr.spec, cr.cmd)
+		c.AddFunc(string(cr.Spec), cr.Cmd)
 	}
 
 	c.Start()
