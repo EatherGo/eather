@@ -1,6 +1,7 @@
 package lib
 
 import (
+	"bytes"
 	"fmt"
 	"log"
 	"os"
@@ -134,8 +135,13 @@ func (m Module) build() {
 		fmt.Println("Module " + m.Name + " is not builded. Building...")
 
 		cmd := exec.Command("go", "build", "-buildmode=plugin", "-o", fullPath, m.getPath(false))
-		if err := cmd.Run(); err != nil {
-			log.Fatal(err)
+
+		var errb bytes.Buffer
+		cmd.Stderr = &errb
+
+		err := cmd.Run()
+		if err != nil {
+			log.Fatal(errb.String())
 		}
 
 		fmt.Println("Module " + m.Name + " was builded")
