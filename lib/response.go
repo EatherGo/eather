@@ -21,10 +21,8 @@ func SendJSONResponse(w http.ResponseWriter, r EatherResponse) {
 	w.Header().Set("Content-Type", "application/json")
 
 	if !r.Status {
-		statusCode := r.StatusCode
-
-		if statusCode == 0 {
-			statusCode = http.StatusBadRequest
+		if r.StatusCode == 0 {
+			r.StatusCode = http.StatusBadRequest
 		}
 
 		http.Error(w, r.Message, r.StatusCode)
