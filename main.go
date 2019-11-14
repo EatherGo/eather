@@ -13,6 +13,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// Start eather application initialize http server and load all modules
 func Start() {
 	launch()
 
@@ -29,7 +30,7 @@ func Start() {
 func launch() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Println("Error loading .env file")
 	}
 
 	if os.Getenv("USE_CRONS") == "1" {

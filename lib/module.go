@@ -133,7 +133,7 @@ func (m Module) build() {
 	if _, err := os.Stat(fullPath); err != nil {
 		fmt.Println("Module " + m.Name + " is not builded. Building...")
 
-		cmd := exec.Command("go", "build", "-buildmode=plugin", "-o", fullPath, m.getPath(true))
+		cmd := exec.Command("go", "build", "-buildmode=plugin", "-o", fullPath, m.getPath(false))
 		if err := cmd.Run(); err != nil {
 			log.Fatal(err)
 		}
