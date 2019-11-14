@@ -1,15 +1,15 @@
 package eather
 
-import "github.com/EatherGo/eather/lib"
+// import "github.com/EatherGo/eather/
 
 // Config structure of config for Eather
 type Config struct {
-	cronlist lib.CronList
+	cronlist CronList
 }
 
 // AddCron will append new cron to the config
-func (c *Config) AddCron(spec lib.Spec, cmd lib.Cmd) {
-	cron := lib.Cron{
+func (c *Config) AddCron(spec Spec, cmd Cmd) {
+	cron := Cron{
 		Spec: spec,
 		Cmd:  cmd,
 	}
@@ -17,6 +17,6 @@ func (c *Config) AddCron(spec lib.Spec, cmd lib.Cmd) {
 	c.cronlist = append(c.cronlist, cron)
 }
 
-func (c *Config) getCrons() lib.CronList {
+func (c *Config) getCrons() CronList {
 	return c.cronlist
 }

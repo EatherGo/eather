@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/EatherGo/eather/lib"
+	// "github.com/EatherGo/eather/
 
 	"time"
 
@@ -30,19 +30,19 @@ func launch(conf *Config) {
 
 	if os.Getenv("USE_CRONS") == "1" {
 		fmt.Println("Crons were enabled.")
-		lib.StartCrons(conf.getCrons())
+		StartCrons(conf.getCrons())
 	}
 
 	if os.Getenv("USE_CACHE") == "1" {
 		fmt.Println("Cache was enabled.")
-		lib.GetCache()
+		GetCache()
 	}
 
-	lib.GetDb()
-	lib.InitVersion()
-	lib.LoadModules()
-	lib.GetRouter()
-	lib.RegisterRoutes()
+	GetDb()
+	InitVersion()
+	LoadModules()
+	GetRouter()
+	RegisterRoutes()
 }
 
 func serve() {

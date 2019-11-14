@@ -1,4 +1,4 @@
-package lib
+package eather
 
 import "reflect"
 
