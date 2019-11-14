@@ -1,12 +1,13 @@
 package lib
 
 import (
-	"eather/lib/types"
 	"encoding/xml"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
+
+	"github.com/EatherGo/eather/lib/types"
 )
 
 // Module of type ModuleXML

@@ -1,9 +1,10 @@
 package lib
 
 import (
-	"eather/lib/types"
 	"fmt"
 	"sync"
+
+	"github.com/EatherGo/eather/lib/types"
 )
 
 var (

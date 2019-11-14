@@ -15,7 +15,7 @@ eather: dep
 application: dep
 	@echo "Building eather app"
 	go build -o eatherapp \
-		./app/main.go
+		./main.go
 		
 clean:
 	go clean ./...

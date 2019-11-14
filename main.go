@@ -1,18 +1,19 @@
-package main
+package eather
 
 import (
-	"eather/lib"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/EatherGo/eather/lib"
 
 	"time"
 
 	"github.com/joho/godotenv"
 )
 
-func main() {
+func Start() {
 	launch()
 
 	srv := &http.Server{

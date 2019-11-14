@@ -1,10 +1,9 @@
-module eather
+module github.com/EatherGo/eather
 
 go 1.13
 
 require (
 	github.com/allegro/bigcache v1.2.1
-	github.com/auth0/go-jwt-middleware v0.0.0-20190805220309-36081240882b // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gorilla/mux v1.7.3
 	github.com/jinzhu/gorm v1.9.11
