@@ -4,9 +4,19 @@ import (
 	"github.com/robfig/cron"
 )
 
+// Cron structure
+type Cron struct {
+	spec string
+	cmd  func()
+}
+
 // StartCrons will start crons in background
-func StartCrons() {
+func StartCrons(cronList []Cron) {
 	c := cron.New()
-	// c.AddFunc("* * * * *", func() { fmt.Println("Every minute cron") })
+
+	for _, cr := range cronList {
+		c.AddFunc(cr.spec, cr.cmd)
+	}
+
 	c.Start()
 }

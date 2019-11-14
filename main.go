@@ -13,8 +13,13 @@ import (
 	"github.com/joho/godotenv"
 )
 
+var cronList []lib.Cron
+
 // Start eather application initialize http server and load all modules
-func Start() {
+func Start(crons []lib.Cron) {
+	cronList = crons
+
+	lib.Cron{spec: "", cmd: func() { fmt.Println("t") }}
 	launch()
 
 	srv := &http.Server{
@@ -35,7 +40,7 @@ func launch() {
 
 	if os.Getenv("USE_CRONS") == "1" {
 		fmt.Println("Crons were enabled.")
-		lib.StartCrons()
+		lib.StartCrons(cronList)
 	}
 
 	if os.Getenv("USE_CACHE") == "1" {
