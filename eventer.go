@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/EatherGo/eather/lib/types"
+	"github.com/EatherGo/eather/types"
 )
 
 var (

@@ -7,7 +7,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/EatherGo/eather/lib/types"
+	"github.com/EatherGo/eather/types"
 )
 
 // Module of type ModuleXML

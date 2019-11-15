@@ -8,7 +8,7 @@ import (
 	"os/exec"
 	"plugin"
 
-	"github.com/EatherGo/eather/lib/types"
+	"github.com/EatherGo/eather/types"
 
 	"github.com/jinzhu/gorm"
 )
