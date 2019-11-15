@@ -1,4 +1,4 @@
-package eather_test
+package eather
 
 import (
 	"testing"
