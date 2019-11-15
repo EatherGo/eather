@@ -1,9 +1,1 @@
-main
 /.idea
-/vendor
-*.so
-.env
-eatherapp
-eather
-/gen/*
-/src/Modules/*
