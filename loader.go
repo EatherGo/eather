@@ -14,24 +14,28 @@ import (
 type Module types.ModuleXML
 
 var (
-	sortedModules []Module
-	modConf       map[string]bool
+	sortedModules    []Module
+	allModuleConfigs map[string]Module = make(map[string]Module)
+	modConf          map[string]bool   = loadModuleConf()
 )
 
 // LoadModules will load all modules inside modules directory
-func LoadModules(dir string) {
-	sortedModules = sortedModules[:0]
+func LoadModules(dirs ...string) {
+	for _, dir := range dirs {
+		loadDir(dir)
+	}
 
-	files := getListOfModuleFolders(dir)
-
-	modConf = loadModuleConf()
-
-	orderByPriorities(getListOfModuleConfigs(files, dir))
+	orderModulesByPriorities()
 
 	for _, m := range sortedModules {
-		m.Dir = dir
 		m.processModule()
 	}
+}
+
+func loadDir(dir string) {
+	files := getListOfModuleFolders(dir)
+
+	getListOfModuleConfigs(files, dir)
 }
 
 func getListOfModuleFolders(dir string) []os.FileInfo {
@@ -43,8 +47,7 @@ func getListOfModuleFolders(dir string) []os.FileInfo {
 	return files
 }
 
-func getListOfModuleConfigs(files []os.FileInfo, dir string) (moduleConfigs map[string]Module) {
-	moduleConfigs = make(map[string]Module)
+func getListOfModuleConfigs(files []os.FileInfo, dir string) {
 
 	for _, f := range files {
 		module, err := loadModule(f.Name(), dir)
@@ -55,17 +58,18 @@ func getListOfModuleConfigs(files []os.FileInfo, dir string) (moduleConfigs map[
 		}
 
 		if modConf[module.Name] {
-			moduleConfigs[module.Name] = module
+			module.Dir = dir
+			allModuleConfigs[module.Name] = module
 		}
 	}
 
 	return
 }
 
-func orderByPriorities(moduleConfigs map[string]Module) {
+func orderModulesByPriorities() {
 	var parents []string
-	for _, m := range moduleConfigs {
-		m.addAllDependencies(moduleConfigs, parents)
+	for _, m := range allModuleConfigs {
+		m.addAllDependencies(parents)
 	}
 }
 

@@ -79,21 +79,21 @@ func (m Module) init() types.Module {
 	return module
 }
 
-func (m Module) addAllDependencies(moduleConfigs map[string]Module, parents []string) {
+func (m Module) addAllDependencies(parents []string) {
 	var cParents []string
 	copy(cParents, parents)
 
 	if len(m.Dependencies.Dependencies) > 0 {
 		for _, d := range m.Dependencies.Dependencies {
-			if mod, ok := moduleConfigs[d]; ok {
+			if mod, ok := allModuleConfigs[d]; ok {
 				if sliceContains(parents, m.Name) {
 					panic("Module " + d + " got into loop. Take a look on dependencies")
 				}
 
 				cParents = append(cParents, mod.Name)
-				mod.addAllDependencies(moduleConfigs, cParents)
+				mod.addAllDependencies(cParents)
 			} else {
-				panic("Module" + d + " not set")
+				panic("Module " + d + " is not installed")
 			}
 		}
 	}

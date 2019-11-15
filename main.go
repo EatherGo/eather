@@ -38,8 +38,7 @@ func launch(conf *Config) {
 
 	GetDb()
 	InitVersion()
-	LoadModules(types.CoreModulesDir)
-	LoadModules(types.ModulesDir)
+	LoadModules(types.CoreModulesDir, types.ModulesDir)
 	GetRouter()
 	RegisterRoutes()
 }
