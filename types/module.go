@@ -4,12 +4,6 @@ import (
 	"encoding/xml"
 )
 
-// CoreModulesDir set the directory for modules
-const CoreModulesDir = "./core/Modules"
-
-// ModulesDir set the directory for modules
-const ModulesDir = "./src/Modules"
-
 // ConfigDir the directory for config files
 const ConfigDir = "./config/"
 

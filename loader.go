@@ -20,7 +20,7 @@ var (
 )
 
 // LoadModules will load all modules inside modules directory
-func LoadModules(dirs ...string) {
+func LoadModules(dirs []string) {
 	for _, dir := range dirs {
 		loadDir(dir)
 	}

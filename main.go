@@ -7,7 +7,6 @@ import (
 	"os"
 	"time"
 
-	"github.com/EatherGo/eather/types"
 	"github.com/joho/godotenv"
 )
 
@@ -28,7 +27,7 @@ func launch(conf *Config) {
 
 	if os.Getenv("USE_CRONS") == "1" {
 		fmt.Println("Crons were enabled.")
-		StartCrons(conf.getCrons())
+		StartCrons(conf.GetCrons())
 	}
 
 	if os.Getenv("USE_CACHE") == "1" {
@@ -38,7 +37,7 @@ func launch(conf *Config) {
 
 	GetDb()
 	InitVersion()
-	LoadModules(types.CoreModulesDir, types.ModulesDir)
+	LoadModules(conf.GetModuleDirs())
 	GetRouter()
 	RegisterRoutes()
 }
