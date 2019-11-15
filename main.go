@@ -5,11 +5,9 @@ import (
 	"log"
 	"net/http"
 	"os"
-
-	// "github.com/EatherGo/eather/
-
 	"time"
 
+	"github.com/EatherGo/eather/lib/types"
 	"github.com/joho/godotenv"
 )
 
@@ -40,7 +38,8 @@ func launch(conf *Config) {
 
 	GetDb()
 	InitVersion()
-	LoadModules()
+	LoadModules(types.CoreModulesDir)
+	LoadModules(types.ModulesDir)
 	GetRouter()
 	RegisterRoutes()
 }

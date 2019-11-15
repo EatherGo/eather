@@ -46,8 +46,7 @@ func (m Module) UpdateVersion() {
 }
 
 func (m Module) getPath(inclFilename bool) string {
-
-	path := types.ModulesDir + "/" + m.Name + "/"
+	path := m.Dir + "/" + m.Name + "/"
 
 	if inclFilename {
 		return path + "module.so"
@@ -121,6 +120,8 @@ func (m Module) processModule() {
 	}
 
 	syncVersions(m, mod)
+
+	fmt.Println("Module " + m.Name + " is running \n")
 }
 
 func (m Module) build() {

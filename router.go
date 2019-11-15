@@ -19,7 +19,7 @@ type eatherRouter mux.Router
 
 // Routes struct - collection of routes
 type Routes struct {
-	Collection map[string]func(w http.ResponseWriter, r *http.Request) EatherResponse
+	Collection map[string]func(w http.ResponseWriter, r *http.Request) Response
 }
 
 // GetRouter - return route collection

@@ -18,21 +18,24 @@ var (
 	modConf       map[string]bool
 )
 
-// LoadModules will load all modules inside modulesDir directory
-func LoadModules() {
-	files := getListOfModuleFolders()
+// LoadModules will load all modules inside modules directory
+func LoadModules(dir string) {
+	sortedModules = sortedModules[:0]
+
+	files := getListOfModuleFolders(dir)
 
 	modConf = loadModuleConf()
 
-	orderByPriorities(getListOfModuleConfigs(files))
+	orderByPriorities(getListOfModuleConfigs(files, dir))
 
 	for _, m := range sortedModules {
+		m.Dir = dir
 		m.processModule()
 	}
 }
 
-func getListOfModuleFolders() []os.FileInfo {
-	files, err := ioutil.ReadDir(types.ModulesDir)
+func getListOfModuleFolders(dir string) []os.FileInfo {
+	files, err := ioutil.ReadDir(dir)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -40,11 +43,11 @@ func getListOfModuleFolders() []os.FileInfo {
 	return files
 }
 
-func getListOfModuleConfigs(files []os.FileInfo) (moduleConfigs map[string]Module) {
+func getListOfModuleConfigs(files []os.FileInfo, dir string) (moduleConfigs map[string]Module) {
 	moduleConfigs = make(map[string]Module)
 
 	for _, f := range files {
-		module, err := loadModule(f.Name())
+		module, err := loadModule(f.Name(), dir)
 
 		if err != nil {
 			fmt.Println(err)
@@ -74,9 +77,9 @@ func callFunc(events map[string]types.EventFunc, name string) types.EventFunc {
 	return func(data ...interface{}) {}
 }
 
-func loadModule(name string) (module Module, err error) {
+func loadModule(name string, dir string) (module Module, err error) {
 
-	file := fmt.Sprintf("%s/%s/etc/module.xml", types.ModulesDir, name)
+	file := fmt.Sprintf("%s/%s/etc/module.xml", dir, name)
 
 	xmlFile, err := os.Open(file)
 
@@ -99,7 +102,7 @@ func loadModule(name string) (module Module, err error) {
 
 func loadModuleConf() (modConfigs map[string]bool) {
 
-	file := "./app/modules.xml"
+	file := types.ConfigDir + "modules.xml"
 
 	xmlFile, err := os.Open(file)
 
