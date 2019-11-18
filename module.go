@@ -111,12 +111,17 @@ func (m Module) processModule() {
 	m.build()
 
 	mod := m.init()
-	mod.MapRoutes()
+
+	if routableModule, isRoutable := mod.(types.Routable); isRoutable {
+		routableModule.MapRoutes()
+	}
 
 	registry.Add(mod, m.Name)
 
-	for _, listener := range m.Events.Listeners {
-		eventer.Add(listener.For, callFunc(mod.GetEventFuncs(), listener.Call), listener.Name)
+	if eventableModule, isEventable := mod.(types.Eventable); isEventable {
+		for _, listener := range m.Events.Listeners {
+			eventer.Add(listener.For, callFunc(eventableModule.GetEventFuncs(), listener.Call), listener.Name)
+		}
 	}
 
 	syncVersions(m, mod)

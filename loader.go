@@ -139,7 +139,11 @@ func syncVersions(module Module, mod types.Module) {
 
 	if version == "" {
 		fmt.Println("Version not found. Installing " + module.Name + " version " + module.Version + "...")
-		mod.Install()
+
+		if installableModule, isInstallable := mod.(types.Installable); isInstallable {
+			installableModule.Install()
+		}
+
 		module.UpdateVersion()
 		fmt.Println(module.Name + " was installed")
 		return
@@ -148,7 +152,11 @@ func syncVersions(module Module, mod types.Module) {
 	if version != module.Version {
 		fmt.Println("Upgrading " + module.Name + " to version " + module.Version + "...")
 		module.UpdateVersion()
-		mod.Upgrade(module.Version)
+
+		if upgradableModule, isUpgradable := mod.(types.Upgradable); isUpgradable {
+			upgradableModule.Upgrade(module.Version)
+		}
+
 		fmt.Println(module.Name + " was upgraded")
 	}
 }

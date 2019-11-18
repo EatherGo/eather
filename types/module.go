@@ -31,9 +31,20 @@ type ModuleConfig struct {
 }
 
 // Module interface
-type Module interface {
+type Module interface{}
+
+type Eventable interface {
 	GetEventFuncs() map[string]EventFunc
+}
+
+type Installable interface {
 	Install()
+}
+
+type Upgradable interface {
 	Upgrade(version string)
+}
+
+type Routable interface {
 	MapRoutes()
 }
