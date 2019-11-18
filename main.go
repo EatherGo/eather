@@ -11,7 +11,7 @@ import (
 )
 
 // Start eather application initialize http server and load all modules
-func Start(conf *Config) {
+func Start(conf ConfigInterface) {
 	// Initialize application and build modules
 	launch(conf)
 
@@ -19,7 +19,7 @@ func Start(conf *Config) {
 	serve()
 }
 
-func launch(conf *Config) {
+func launch(conf ConfigInterface) {
 	err := godotenv.Load()
 	if err != nil {
 		log.Println("Error loading .env file")

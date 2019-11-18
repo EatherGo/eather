@@ -11,7 +11,6 @@ const ConfigDir = "./config/"
 type ModuleXML struct {
 	XMLName      xml.Name     `xml:"module"`
 	Name         string       `xml:"name"`
-	Func         string       `xml:"func"`
 	Version      string       `xml:"version"`
 	Events       Events       `xml:"events"`
 	Dependencies Dependencies `xml:"dependencies"`

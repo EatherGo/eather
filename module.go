@@ -62,7 +62,7 @@ func (m Module) init() types.Module {
 		os.Exit(1)
 	}
 
-	lookup, err := plug.Lookup(m.Func)
+	lookup, err := plug.Lookup(m.Name)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
