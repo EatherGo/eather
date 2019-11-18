@@ -1,11 +1,6 @@
 package eather
 
-import (
-	"log"
-	"os"
-
-	"github.com/joho/godotenv"
-)
+import "os"
 
 // Config structure of config for Eather
 type Config struct {
@@ -13,16 +8,19 @@ type Config struct {
 	moduleDirs []string
 }
 
-// GetConfig will return default config settings
-func GetConfig() *Config {
-	err := godotenv.Load()
-	if err != nil {
-		log.Println("Error loading .env file")
-	}
+// ConfigInterface interface of config
+type ConfigInterface interface {
+	AddCron(spec Spec, cmd Cmd)
+	AddModuleDirs(dir ...string)
+	GetCrons() CronList
+	GetModuleDirs() []string
+}
 
+// GetConfig will return default config settings
+func GetConfig() ConfigInterface {
 	return &Config{
 		cronlist:   CronList{},
-		moduleDirs: []string{os.Getenv("CORE_MODULES_DIR"), os.Getenv("CUSTOM_MODULES_DIR")},
+		moduleDirs: []string{},
 	}
 }
 
@@ -50,5 +48,12 @@ func (c *Config) GetCrons() CronList {
 
 // GetModuleDirs returns directories of modules
 func (c *Config) GetModuleDirs() []string {
+	if len(c.moduleDirs) == 0 {
+		return defaultModuleDirs()
+	}
 	return c.moduleDirs
+}
+
+func defaultModuleDirs() []string {
+	return []string{os.Getenv("CORE_MODULES_DIR"), os.Getenv("CUSTOM_MODULES_DIR")}
 }
