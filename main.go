@@ -3,9 +3,7 @@ package eather
 import (
 	"fmt"
 	"log"
-	"net/http"
 	"os"
-	"time"
 
 	"github.com/joho/godotenv"
 )
@@ -16,7 +14,7 @@ func Start(conf ConfigInterface) {
 	launch(conf)
 
 	// Start http server
-	serve()
+	serve(conf)
 }
 
 func launch(conf ConfigInterface) {
@@ -39,16 +37,9 @@ func launch(conf ConfigInterface) {
 	InitVersion()
 	LoadModules(conf.GetModuleDirs())
 	GetRouter()
-	RegisterRoutes()
+	RegisterRoutes(conf.GetCorsOpts())
 }
 
-func serve() {
-	srv := &http.Server{
-		Handler:      nil,
-		Addr:         os.Getenv("APP_URL"),
-		WriteTimeout: 15 * time.Second,
-		ReadTimeout:  15 * time.Second,
-	}
-
-	log.Fatal(srv.ListenAndServe())
+func serve(conf ConfigInterface) {
+	log.Fatal(conf.GetServerConf().ListenAndServe())
 }

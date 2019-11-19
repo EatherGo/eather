@@ -2,7 +2,6 @@ package eather
 
 import (
 	"net/http"
-	"os"
 	"sync"
 
 	"github.com/gorilla/mux"
@@ -32,24 +31,6 @@ func GetRouter() *mux.Router {
 }
 
 // RegisterRoutes - listen for routes
-func RegisterRoutes() {
-	corsOpts := cors.New(cors.Options{
-		AllowedOrigins: []string{os.Getenv("FRONTEND_URL")}, //you service is available and allowed for this base url
-		AllowedMethods: []string{
-			http.MethodGet, //http methods for your app
-			http.MethodPost,
-			http.MethodPut,
-			http.MethodPatch,
-			http.MethodDelete,
-			http.MethodOptions,
-			http.MethodHead,
-		},
-
-		AllowedHeaders: []string{
-			"*", //or you can your header key values which you are using in your application
-
-		},
-	})
-
+func RegisterRoutes(corsOpts *cors.Cors) {
 	http.Handle("/", corsOpts.Handler(router))
 }
