@@ -9,15 +9,16 @@ import (
 	"plugin"
 
 	"github.com/EatherGo/eather/types"
-
-	"github.com/jinzhu/gorm"
 )
 
 // ModuleVersion struct - structure of moduleVersion in database
 type ModuleVersion struct {
-	gorm.Model
-	Name    string
-	Version string
+	ID uint `gorm:"primary_key" jsonapi:"primary,modules"`
+	DatabaseCreatedAt
+	DatabaseUpdatedAt
+	DatabaseDeletedAt
+	Name    string `jsonapi:"attr,name"`
+	Version string `jsonapi:"attr,version"`
 }
 
 // InitVersion - initialize version with automigration
@@ -98,7 +99,7 @@ func (m Module) addAllDependencies(parents []string) {
 		}
 	}
 
-	if !contains(sortedModules, m) {
+	if !containsModule(sortedModules, m) {
 		sortedModules = append(sortedModules, m)
 	}
 }

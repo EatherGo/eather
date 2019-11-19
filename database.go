@@ -45,15 +45,35 @@ func initDb() *Database {
 	return &Database{db}
 }
 
-// Base contains common columns for all tables.
-type Base struct {
-	ID        uuid.UUID `gorm:"primary_key"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt *time.Time `sql:"index"`
+// ModelBase contains common columns for all tables.
+type ModelBase struct {
+	DatabaseID
+	DatabaseCreatedAt
+	DatabaseUpdatedAt
+	DatabaseDeletedAt
+}
+
+// DatabaseID set default ID column
+type DatabaseID struct {
+	ID uuid.UUID `gorm:"primary_key"`
+}
+
+// DatabaseCreatedAt set default created_at column
+type DatabaseCreatedAt struct {
+	CreatedAt time.Time `jsonapi:"attr,created_at"`
+}
+
+// DatabaseUpdatedAt set default updated_at column
+type DatabaseUpdatedAt struct {
+	UpdatedAt time.Time `jsonapi:"attr,updated_at"`
+}
+
+// DatabaseDeletedAt set default deleted_at column
+type DatabaseDeletedAt struct {
+	DeletedAt *time.Time `sql:"index" jsonapi:"attr,deleted_at"`
 }
 
 // BeforeCreate will set a UUID rather than numeric ID.
-func (base *Base) BeforeCreate(scope *gorm.Scope) error {
+func (base *DatabaseID) BeforeCreate(scope *gorm.Scope) error {
 	return scope.SetColumn("ID", uuid.NewV4())
 }

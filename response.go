@@ -3,6 +3,8 @@ package eather
 import (
 	"encoding/json"
 	"net/http"
+
+	"github.com/google/jsonapi"
 )
 
 // Response struct - customize response for routes
@@ -30,4 +32,13 @@ func SendJSONResponse(w http.ResponseWriter, r Response) {
 	}
 
 	json.NewEncoder(w).Encode(r)
+}
+
+func SendNewResponse(w http.ResponseWriter, model interface{}) {
+	w.Header().Set("Content-Type", jsonapi.MediaType)
+	w.WriteHeader(http.StatusCreated)
+
+	if err := jsonapi.MarshalPayload(w, model); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
