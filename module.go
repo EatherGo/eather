@@ -13,12 +13,12 @@ import (
 
 // ModuleVersion struct - structure of moduleVersion in database
 type ModuleVersion struct {
-	ID uint `gorm:"primary_key" jsonapi:"primary,modules"`
+	ID uint `gorm:"primary_key"`
 	DatabaseCreatedAt
 	DatabaseUpdatedAt
 	DatabaseDeletedAt
-	Name    string `jsonapi:"attr,name"`
-	Version string `jsonapi:"attr,version"`
+	Name    string
+	Version string
 }
 
 // InitVersion - initialize version with automigration
