@@ -31,3 +31,8 @@ func TestEventsCanBeRemoved(t *testing.T) {
 
 	assert.Equal(t, 0, len(e.GetCollection()), "Event collection be empty")
 }
+
+func TestEventIsEmmitable(t *testing.T) {
+	e.Add("emmitable", func(data ...interface{}) {}, "emmiting")
+	e.Emmit("emmitable")
+}
