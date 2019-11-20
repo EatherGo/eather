@@ -11,7 +11,6 @@ import (
 var (
 	router    *mux.Router
 	onceRoute sync.Once
-	mr        = mux.NewRouter()
 )
 
 type eatherRouter mux.Router
