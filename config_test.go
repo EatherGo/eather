@@ -11,6 +11,12 @@ import (
 
 var c = GetConfig()
 
+func TestGetConfigShouldReturnEmptyConfig(t *testing.T) {
+	c1 := GetConfig()
+
+	assert.Equal(t, &Config{}, c1, "Config should be empty")
+}
+
 func TestCronsCanBeAddedToConfig(t *testing.T) {
 	assert.Equal(t, 0, len(c.GetCrons()), "Crons collection should be empty")
 
