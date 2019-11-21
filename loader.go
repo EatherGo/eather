@@ -11,12 +11,12 @@ import (
 )
 
 // Module of type ModuleXML
-type Module types.ModuleXML
+type ModuleXML types.ModuleXML
 
 var (
-	sortedModules    []Module
-	allModuleConfigs map[string]Module = make(map[string]Module)
-	modConf          map[string]bool   = loadModuleConf()
+	sortedModules    []ModuleXML
+	allModuleConfigs map[string]ModuleXML = make(map[string]ModuleXML)
+	modConf          map[string]bool      = loadModuleConf()
 )
 
 // LoadModules will load all modules inside modules directory
@@ -73,15 +73,17 @@ func orderModulesByPriorities() {
 	}
 }
 
-func callFunc(events map[string]types.EventFunc, name string) types.EventFunc {
-	if val, ok := events[name]; ok {
-		return val
+func callFunc(events []Fire, name string) EventFunc {
+	for _, a := range events {
+		if a.Call == name {
+			return a.Func
+		}
 	}
 
 	return func(data ...interface{}) {}
 }
 
-func loadModule(name string, dir string) (module Module, err error) {
+func loadModule(name string, dir string) (module ModuleXML, err error) {
 
 	file := fmt.Sprintf("%s/%s/etc/module.xml", dir, name)
 
@@ -134,13 +136,13 @@ func loadModuleConf() (modConfigs map[string]bool) {
 	return
 }
 
-func syncVersions(module Module, mod types.Module) {
+func syncVersions(module ModuleXML, mod Module) {
 	version := module.GetVersion()
 
 	if version == "" {
 		fmt.Println("Version not found. Installing " + module.Name + " version " + module.Version + "...")
 
-		if installableModule, isInstallable := mod.(types.Installable); isInstallable {
+		if installableModule, isInstallable := mod.(Installable); isInstallable {
 			installableModule.Install()
 		}
 
@@ -153,7 +155,7 @@ func syncVersions(module Module, mod types.Module) {
 		fmt.Println("Upgrading " + module.Name + " to version " + module.Version + "...")
 		module.UpdateVersion()
 
-		if upgradableModule, isUpgradable := mod.(types.Upgradable); isUpgradable {
+		if upgradableModule, isUpgradable := mod.(Upgradable); isUpgradable {
 			upgradableModule.Upgrade(module.Version)
 		}
 

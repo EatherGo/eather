@@ -15,6 +15,3 @@ type Listener struct {
 	Call    string   `xml:"call,attr"`
 	Name    string   `xml:"name,attr"`
 }
-
-// EventFunc type of events func
-type EventFunc func(data ...interface{})

@@ -33,5 +33,9 @@ func SendJSONResponse(w http.ResponseWriter, r Response) {
 		r.StatusCode = http.StatusOK
 	}
 
-	json.NewEncoder(w).Encode(r)
+	err := json.NewEncoder(w).Encode(r)
+
+	if err != nil {
+		json.NewEncoder(w).Encode(map[string]string{"Message": "Invalid Data", "Error": err.Error()})
+	}
 }

@@ -11,7 +11,7 @@ func sliceContains(s []string, e string) bool {
 	return false
 }
 
-func containsModule(s []Module, e Module) bool {
+func containsModule(s []ModuleXML, e Module) bool {
 	for _, a := range s {
 		if reflect.DeepEqual(a, e) {
 			return true

@@ -3,8 +3,6 @@ package eather
 import (
 	"fmt"
 	"sync"
-
-	"github.com/EatherGo/eather/types"
 )
 
 var (
@@ -15,14 +13,9 @@ var (
 // EventsInterface interface of events
 type EventsInterface interface {
 	Emmit(name string, data ...interface{})
-	Add(name string, f types.EventFunc, call string)
+	Add(name string, f EventFunc, call string)
 	Remove(name string)
 	GetCollection() EventCollection
-}
-
-type event struct {
-	Name  string
-	Fires FiresCollection
 }
 
 // Events struct - collection of events
@@ -30,22 +23,35 @@ type Events struct {
 	Collection EventCollection
 }
 
-// EventCollection is definition of events collection
-type EventCollection map[string]event
+// Event structure
+type Event struct {
+	Name  string `json:"name"`
+	Fires []Fire `json:"-"`
+}
 
-// FiresCollection is definition of fires collection
-type FiresCollection map[string]types.EventFunc
+// EventCollection is definition of events collection
+type EventCollection map[string]Event
+
+// EventFunc type of events func
+type EventFunc func(data ...interface{})
+
+// Fire struct of Fires
+type Fire struct {
+	Call string
+	Func EventFunc
+}
 
 // Add event to the collection
-func (r *Events) Add(name string, f types.EventFunc, call string) {
+func (r *Events) Add(name string, f EventFunc, call string) {
 	fmt.Println("Adding event " + name + " to call " + call)
 	if val, ok := r.Collection[name]; ok {
-		val.Fires[call] = f
-		r.Collection[name] = val
+		val.Fires = append(val.Fires, Fire{Call: call, Func: f})
+		// val.Fires[call] = f
+		// r.Collection[name] = val
 	} else {
-		fires := make(FiresCollection)
-		fires[call] = f
-		e := event{Name: name, Fires: fires}
+		// fires := make(Fire)
+		fire := Fire{Call: call, Func: f}
+		e := Event{Name: name, Fires: []Fire{fire}}
 		r.Collection[name] = e
 	}
 }
@@ -55,7 +61,7 @@ func (r *Events) Add(name string, f types.EventFunc, call string) {
 func (r *Events) Emmit(name string, data ...interface{}) {
 	if val, ok := r.Collection[name]; ok {
 		for _, fire := range val.Fires {
-			go fire(data)
+			go fire.Func(data)
 		}
 	}
 }
@@ -74,7 +80,7 @@ func (r *Events) GetCollection() EventCollection {
 func GetEvents() EventsInterface {
 
 	onceEvent.Do(func() {
-		eventInstance = &Events{make(map[string]event)}
+		eventInstance = &Events{make(map[string]Event)}
 	})
 
 	return eventInstance

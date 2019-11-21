@@ -7,8 +7,6 @@ import (
 	"os"
 	"os/exec"
 	"plugin"
-
-	"github.com/EatherGo/eather/types"
 )
 
 // ModuleVersion struct - structure of moduleVersion in database
@@ -21,13 +19,40 @@ type ModuleVersion struct {
 	Version string
 }
 
+// Module interface
+type Module interface{}
+
+// Eventable interface for modules that are with events
+// add this func to module to enable events
+type Eventable interface {
+	GetEventFuncs() []Fire
+}
+
+// Installable interface for modules that are with func Install
+// add this func to run install func during installation of module
+type Installable interface {
+	Install()
+}
+
+// Upgradable interface for modules that are with func Upgrade
+// add this func to run Upgrade after upgrading module version
+type Upgradable interface {
+	Upgrade(version string)
+}
+
+// Routable interface for modules that are with func Routable
+// add this func to map routes for module
+type Routable interface {
+	MapRoutes()
+}
+
 // InitVersion - initialize version with automigration
 func InitVersion() {
 	db.AutoMigrate(&ModuleVersion{})
 }
 
 // GetVersion - load version from database
-func (m Module) GetVersion() string {
+func (m ModuleXML) GetVersion() string {
 	module := ModuleVersion{}
 	db.Select("version").Where("name = ?", m.Name).First(&module)
 
@@ -35,7 +60,7 @@ func (m Module) GetVersion() string {
 }
 
 // UpdateVersion - set the new version of the module to the database
-func (m Module) UpdateVersion() {
+func (m ModuleXML) UpdateVersion() {
 	if m.GetVersion() == "" {
 		db.Create(&ModuleVersion{Name: m.Name, Version: m.Version})
 	} else {
@@ -46,7 +71,7 @@ func (m Module) UpdateVersion() {
 	}
 }
 
-func (m Module) getPath(inclFilename bool) string {
+func (m ModuleXML) getPath(inclFilename bool) string {
 	path := m.Dir + "/" + m.Name + "/"
 
 	if inclFilename {
@@ -56,7 +81,7 @@ func (m Module) getPath(inclFilename bool) string {
 	return path
 }
 
-func (m Module) init() types.Module {
+func (m ModuleXML) init() Module {
 	plug, err := plugin.Open(m.getPath(true))
 	if err != nil {
 		fmt.Println(err)
@@ -69,9 +94,9 @@ func (m Module) init() types.Module {
 		os.Exit(1)
 	}
 
-	mod, _ := lookup.(func() (types.Module, error))()
+	mod, _ := lookup.(func() (Module, error))()
 
-	module, ok := mod.(types.Module)
+	module, ok := mod.(Module)
 	if !ok {
 		fmt.Println("unexpected type from module symbol")
 		os.Exit(1)
@@ -80,7 +105,7 @@ func (m Module) init() types.Module {
 	return module
 }
 
-func (m Module) addAllDependencies(parents []string) {
+func (m ModuleXML) addAllDependencies(parents []string) {
 	var cParents []string
 	copy(cParents, parents)
 
@@ -104,7 +129,7 @@ func (m Module) addAllDependencies(parents []string) {
 	}
 }
 
-func (m Module) processModule() {
+func (m ModuleXML) processModule() {
 
 	registry := GetRegistry()
 	eventer := GetEvents()
@@ -113,13 +138,13 @@ func (m Module) processModule() {
 
 	mod := m.init()
 
-	if routableModule, isRoutable := mod.(types.Routable); isRoutable {
+	if routableModule, isRoutable := mod.(Routable); isRoutable {
 		routableModule.MapRoutes()
 	}
 
 	registry.Add(mod, m.Name)
 
-	if eventableModule, isEventable := mod.(types.Eventable); isEventable {
+	if eventableModule, isEventable := mod.(Eventable); isEventable {
 		for _, listener := range m.Events.Listeners {
 			eventer.Add(listener.For, callFunc(eventableModule.GetEventFuncs(), listener.Call), listener.Name)
 		}
@@ -130,7 +155,7 @@ func (m Module) processModule() {
 	fmt.Println("Module " + m.Name + " is running \n")
 }
 
-func (m Module) build() {
+func (m ModuleXML) build() {
 	fullPath := m.getPath(true)
 
 	if os.Getenv("REBUILD") == "1" {
