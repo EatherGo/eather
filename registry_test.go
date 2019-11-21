@@ -17,7 +17,7 @@ func TestItShouldAddModuleToRegistry(t *testing.T) {
 
 	assert.Equal(t, 1, len(r.GetCollection()), "Registry collection should have one module in registry")
 
-	assert.Equal(t, mod{}, r.Get("test"), "Get function should return added module")
+	assert.Equal(t, RegistryModule{Module: mod{}}, r.Get("test"), "Get function should return added module")
 
 	assert.Equal(t, true, r.Contains("test"), "Contains should return true that test exists in collection")
 }

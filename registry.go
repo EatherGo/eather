@@ -26,6 +26,7 @@ type Registry struct {
 // RegistryModuleInterface interface for registryModule
 type RegistryModuleInterface interface {
 	GetCallable() Callable
+	GetCronable() Cronable
 }
 
 // RegistryModule structure
@@ -42,13 +43,22 @@ func (rm RegistryModule) GetCallable() Callable {
 	return nil
 }
 
+// GetCronable will return nil or cronable interface
+func (rm RegistryModule) GetCronable() Cronable {
+	if cronable, isCronable := rm.Module.(Cronable); isCronable {
+		return cronable
+	}
+
+	return nil
+}
+
 // RegistryCollection map of all modules in registry
-type RegistryCollection map[string]Module
+type RegistryCollection map[string]RegistryModule
 
 // Get module from registry by name
 func (r *Registry) Get(name string) RegistryModuleInterface {
-	if val, ok := r.collection[name]; ok {
-		return RegistryModule{Module: val}
+	if reg, ok := r.collection[name]; ok {
+		return reg
 	}
 
 	return nil
@@ -61,7 +71,8 @@ func (r *Registry) GetCollection() RegistryCollection {
 
 // Add module to the registry object
 func (r *Registry) Add(object Module, name string) {
-	r.collection[name] = object
+	r.collection[name] = RegistryModule{Module: object}
+
 }
 
 // Contains check if module is already in registry
@@ -81,7 +92,7 @@ func GetRegistry() RegistryInterface {
 
 	once.Do(func() {
 
-		instance = &Registry{make(map[string]Module)}
+		instance = &Registry{make(map[string]RegistryModule)}
 
 	})
 

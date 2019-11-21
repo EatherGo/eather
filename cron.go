@@ -23,9 +23,21 @@ type CronList []Cron
 func StartCrons(cronList []Cron) {
 	c := cron.New()
 
-	for _, cr := range cronList {
-		c.AddFunc(string(cr.Spec), cr.Cmd)
+	addCrons(c, cronList)
+
+	r := GetRegistry()
+
+	for _, r := range r.GetCollection() {
+		if cronable := r.GetCronable(); cronable != nil {
+			addCrons(c, cronable.Crons())
+		}
 	}
 
 	c.Start()
+}
+
+func addCrons(c *cron.Cron, cronList CronList) {
+	for _, cr := range cronList {
+		c.AddFunc(string(cr.Spec), cr.Cmd)
+	}
 }

@@ -46,6 +46,12 @@ type Routable interface {
 	MapRoutes()
 }
 
+// Cronable interface for modules that are with func Crons
+// return cronlist to add custom crons from modules to global list
+type Cronable interface {
+	Crons() CronList
+}
+
 // Callable interface for modules that are with GetPublicFuncs
 // posibility to add custom public functions
 type Callable interface {
