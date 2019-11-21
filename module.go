@@ -146,7 +146,7 @@ func (m ModuleXML) processModule() {
 
 	if eventableModule, isEventable := mod.(Eventable); isEventable {
 		for _, listener := range m.Events.Listeners {
-			eventer.Add(listener.For, callFunc(eventableModule.GetEventFuncs(), listener.Call), listener.Name)
+			eventer.Add(listener.For, callFunc(eventableModule.GetEventFuncs(), listener.Call), listener.Call, listener.Name)
 		}
 	}
 

@@ -13,7 +13,7 @@ var (
 // EventsInterface interface of events
 type EventsInterface interface {
 	Emmit(name string, data ...interface{})
-	Add(name string, f EventFunc, call string)
+	Add(eventName string, f EventFunc, call string, name string)
 	Remove(name string)
 	GetCollection() EventCollection
 }
@@ -38,19 +38,22 @@ type EventFunc func(data ...interface{})
 // Fire struct of Fires
 type Fire struct {
 	Call string    `json:"call"`
+	Name string    `json:"name"`
 	Func EventFunc `json:"-"`
 }
 
 // Add event to the collection
-func (r *Events) Add(name string, f EventFunc, call string) {
-	fmt.Println("Adding event " + name + " to call " + call)
-	if e, ok := r.Collection[name]; ok {
-		e.Fires = append(e.Fires, Fire{Call: call, Func: f})
-		r.Collection[name] = e
+func (r *Events) Add(eventName string, f EventFunc, call string, name string) {
+	fmt.Println("Adding event " + eventName + " to call " + call + " with name " + name)
+
+	fire := Fire{Call: call, Func: f, Name: name}
+
+	if e, ok := r.Collection[eventName]; ok {
+		e.Fires = append(e.Fires, fire)
+		r.Collection[eventName] = e
 	} else {
-		fire := Fire{Call: call, Func: f}
-		e := Event{Name: name, Fires: []Fire{fire}}
-		r.Collection[name] = e
+		e := Event{Name: eventName, Fires: []Fire{fire}}
+		r.Collection[eventName] = e
 	}
 }
 
