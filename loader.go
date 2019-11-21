@@ -10,7 +10,7 @@ import (
 	"github.com/EatherGo/eather/types"
 )
 
-// Module of type ModuleXML
+// ModuleXML of type ModuleXML
 type ModuleXML types.ModuleXML
 
 var (

@@ -26,7 +26,7 @@ type Events struct {
 // Event structure
 type Event struct {
 	Name  string `json:"name"`
-	Fires []Fire `json:"-"`
+	Fires []Fire `json:"fires"`
 }
 
 // EventCollection is definition of events collection
@@ -37,19 +37,17 @@ type EventFunc func(data ...interface{})
 
 // Fire struct of Fires
 type Fire struct {
-	Call string
-	Func EventFunc
+	Call string    `json:"call"`
+	Func EventFunc `json:"-"`
 }
 
 // Add event to the collection
 func (r *Events) Add(name string, f EventFunc, call string) {
 	fmt.Println("Adding event " + name + " to call " + call)
-	if val, ok := r.Collection[name]; ok {
-		val.Fires = append(val.Fires, Fire{Call: call, Func: f})
-		// val.Fires[call] = f
-		// r.Collection[name] = val
+	if e, ok := r.Collection[name]; ok {
+		e.Fires = append(e.Fires, Fire{Call: call, Func: f})
+		r.Collection[name] = e
 	} else {
-		// fires := make(Fire)
 		fire := Fire{Call: call, Func: f}
 		e := Event{Name: name, Fires: []Fire{fire}}
 		r.Collection[name] = e
