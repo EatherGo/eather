@@ -23,11 +23,6 @@ func launch(conf ConfigInterface) {
 		log.Println("Error loading .env file")
 	}
 
-	if os.Getenv("USE_CRONS") == "1" {
-		fmt.Println("Crons were enabled.")
-		StartCrons(conf.GetCrons())
-	}
-
 	if os.Getenv("USE_CACHE") == "1" {
 		fmt.Println("Cache was enabled.")
 		GetCache()
@@ -38,6 +33,11 @@ func launch(conf ConfigInterface) {
 	LoadModules(conf.GetModuleDirs())
 	GetRouter()
 	RegisterRoutes(conf.GetCorsOpts())
+
+	if os.Getenv("USE_CRONS") == "1" {
+		fmt.Println("Crons were enabled.")
+		StartCrons(conf.GetCrons())
+	}
 }
 
 func serve(conf ConfigInterface) {

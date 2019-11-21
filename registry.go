@@ -11,7 +11,7 @@ var (
 
 // RegistryInterface - interface for a registry
 type RegistryInterface interface {
-	Get(name string) Module
+	Get(name string) RegistryModuleInterface
 	GetCollection() RegistryCollection
 	Add(object Module, name string)
 	Contains(name string) bool
@@ -23,13 +23,32 @@ type Registry struct {
 	collection RegistryCollection
 }
 
+// RegistryModuleInterface interface for registryModule
+type RegistryModuleInterface interface {
+	GetCallable() Callable
+}
+
+// RegistryModule structure
+type RegistryModule struct {
+	Module Module
+}
+
+// GetCallable will return nil or callable interface
+func (rm RegistryModule) GetCallable() Callable {
+	if callable, isCallable := rm.Module.(Callable); isCallable {
+		return callable
+	}
+
+	return nil
+}
+
 // RegistryCollection map of all modules in registry
 type RegistryCollection map[string]Module
 
 // Get module from registry by name
-func (r *Registry) Get(name string) Module {
+func (r *Registry) Get(name string) RegistryModuleInterface {
 	if val, ok := r.collection[name]; ok {
-		return val
+		return RegistryModule{Module: val}
 	}
 
 	return nil

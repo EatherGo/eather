@@ -46,6 +46,28 @@ type Routable interface {
 	MapRoutes()
 }
 
+// Callable interface for modules that are with GetPublicFuncs
+// posibility to add custom public functions
+type Callable interface {
+	GetPublicFuncs() PublicFuncList
+}
+
+// PublicFunc function type for public function
+type PublicFunc func(data ...interface{}) (interface{}, error)
+
+// PublicFuncList is a list of function
+type PublicFuncList map[string]PublicFunc
+
+// Call function to call the public function of module
+func (pfl PublicFuncList) Call(name string, data ...interface{}) (i interface{}, err error) {
+	if pf, ok := pfl[name]; ok {
+		i, err = pf(data)
+		return
+	}
+
+	return
+}
+
 // InitVersion - initialize version with automigration
 func InitVersion() {
 	db.AutoMigrate(&ModuleVersion{})
