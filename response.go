@@ -29,5 +29,9 @@ func SendJSONResponse(w http.ResponseWriter, r Response) {
 		return
 	}
 
+	if r.StatusCode == 0 {
+		r.StatusCode = http.StatusOK
+	}
+
 	json.NewEncoder(w).Encode(r)
 }
