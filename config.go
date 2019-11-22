@@ -92,7 +92,17 @@ func (c *Config) GetServerConf() *http.Server {
 }
 
 func defaultModuleDirs() []string {
-	return []string{os.Getenv("CORE_MODULES_DIR"), os.Getenv("CUSTOM_MODULES_DIR")}
+	var dirs []string
+
+	if coredir := os.Getenv("CORE_MODULES_DIR"); coredir != "" {
+		dirs = append(dirs, coredir)
+	}
+
+	if customdir := os.Getenv("CUSTOM_MODULES_DIR"); customdir != "" {
+		dirs = append(dirs, customdir)
+	}
+
+	return dirs
 }
 
 func defaultCorsOpts() *cors.Cors {

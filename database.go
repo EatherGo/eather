@@ -1,13 +1,14 @@
 package eather
 
 import (
+	"log"
 	"os"
 	"sync"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql" // Loading mysql dialects
-	uuid "github.com/satori/go.uuid"
 )
 
 var (
@@ -32,8 +33,8 @@ func GetDb() *Database {
 }
 
 func initDb() *Database {
-	user := os.Getenv("CONNECTION_USER")
-	password := os.Getenv("CONNECTION_PASSWORD")
+	user := os.Getenv("DATABASE_USER")
+	password := os.Getenv("DATABASE_PASSWORD")
 	dbname := os.Getenv("DATABASE_NAME")
 
 	db, err := gorm.Open("mysql", user+":"+password+"@/"+dbname+"?charset=utf8&parseTime=True&loc=Local")
@@ -75,5 +76,11 @@ type DatabaseDeletedAt struct {
 
 // BeforeCreate will set a UUID rather than numeric ID.
 func (base *DatabaseID) BeforeCreate(scope *gorm.Scope) error {
-	return scope.SetColumn("ID", uuid.NewV4())
+	uuid, err := uuid.NewRandom()
+
+	if err != nil {
+		log.Println("Error creating new UUID")
+	}
+
+	return scope.SetColumn("ID", uuid)
 }
