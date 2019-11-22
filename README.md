@@ -1,5 +1,5 @@
 # EATHER Project
-Application that loading Go plugins using built-in buildmode=plugin that are created by predefined interface.  
+Application that loading Go plugins that are created by predefined interface using built-in buildmode=plugin.  
 
 ## Overview
 
