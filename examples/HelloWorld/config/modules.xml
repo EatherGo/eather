@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modules>
+    <module>
+        <name>HelloWorld</name>
+        <enabled>true</enabled>
+    </module>
+</modules>

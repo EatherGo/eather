@@ -20,10 +20,12 @@ import (
 
 func main() {
 	config := eather.GetConfig()
-    
+
 	eather.Start(config)
 }
 
 ```
 
-Access http://localhost:8000/ or APP_URL from ENV.
+Copy .env.example to your project as .env with your own settings.
+
+Access http://localhost:8000/ or APP_URL from ENV, and you should see 404 page not found.

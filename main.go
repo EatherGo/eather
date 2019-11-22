@@ -10,6 +10,11 @@ import (
 
 // Start eather application initialize http server and load all modules
 func Start(conf ConfigInterface) {
+
+	if conf == nil {
+		conf = GetConfig()
+	}
+
 	// Initialize application and build modules
 	launch(conf)
 
