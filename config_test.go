@@ -26,8 +26,6 @@ func TestCronsCanBeAddedToConfig(t *testing.T) {
 }
 
 func TestModulesDirsCanBeAddedToConfig(t *testing.T) {
-	assert.Equal(t, 2, len(c.GetModuleDirs()), "If modules dir is empty, default dirs should be added to collection")
-
 	c1 := GetConfig()
 
 	c1.AddModuleDirs("testing/dir")
