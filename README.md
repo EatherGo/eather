@@ -1,5 +1,5 @@
 # EATHER Project
-Application that loading Go plugins using built-in Go plugins created by predefined interface.  
+Application that loading Go plugins using built-in buildmode=plugin that are created by predefined interface.  
 
 ## Overview
 
@@ -26,4 +26,4 @@ func main() {
 
 Copy .env.example to your project as .env with your own settings.
 
-Access http://localhost:8000/ or APP_URL from ENV, and you should see 404 page not found or `Hello world` and you ready to start.
+Access http://localhost:8000/ or APP_URL from ENV, and you should see `404 page not found` or `Hello world` and you are ready to start.
