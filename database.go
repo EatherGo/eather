@@ -55,22 +55,22 @@ type ModelBase struct {
 
 // DatabaseID set default ID column
 type DatabaseID struct {
-	ID uuid.UUID `gorm:"primary_key"`
+	ID uuid.UUID `gorm:"primary_key" json:",omitempty"`
 }
 
 // DatabaseCreatedAt set default created_at column
 type DatabaseCreatedAt struct {
-	CreatedAt time.Time `jsonapi:"attr,created_at"`
+	CreatedAt time.Time `json:",omitempty"`
 }
 
 // DatabaseUpdatedAt set default updated_at column
 type DatabaseUpdatedAt struct {
-	UpdatedAt time.Time `jsonapi:"attr,updated_at"`
+	UpdatedAt time.Time `json:",omitempty"`
 }
 
 // DatabaseDeletedAt set default deleted_at column
 type DatabaseDeletedAt struct {
-	DeletedAt *time.Time `sql:"index" jsonapi:"attr,deleted_at"`
+	DeletedAt *time.Time `sql:"index" json:",omitempty"`
 }
 
 // BeforeCreate will set a UUID rather than numeric ID.

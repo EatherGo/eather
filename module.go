@@ -11,12 +11,12 @@ import (
 
 // ModuleVersion struct - structure of moduleVersion in database
 type ModuleVersion struct {
-	ID uint `gorm:"primary_key"`
+	ID uint `gorm:"primary_key" json:",omitempty"`
 	DatabaseCreatedAt
 	DatabaseUpdatedAt
 	DatabaseDeletedAt
-	Name    string
-	Version string
+	Name    string `json:",omitempty"`
+	Version string `json:",omitempty"`
 }
 
 // Module interface

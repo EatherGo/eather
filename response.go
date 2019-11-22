@@ -7,10 +7,10 @@ import (
 
 // Response struct - customize response for routes
 type Response struct {
-	Status     bool
-	Message    string
-	Data       DataResponse
-	StatusCode int
+	Status     bool         `json:"status"`
+	Message    string       `json:"message"`
+	Data       DataResponse `json:"data"`
+	StatusCode int          `json:"statusCode"`
 }
 
 // DataResponse set DataResponse type
