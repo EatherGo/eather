@@ -33,8 +33,11 @@ func launch(conf ConfigInterface) {
 		GetCache()
 	}
 
-	GetDb()
-	InitVersion()
+	if os.Getenv("USE_DATABASE") == "1" {
+		GetDb()
+		InitVersion()
+	}
+
 	LoadModules(conf.GetModuleDirs())
 	GetRouter()
 	RegisterRoutes(conf.GetCorsOpts())

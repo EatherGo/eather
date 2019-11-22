@@ -178,7 +178,9 @@ func (m ModuleXML) processModule() {
 		}
 	}
 
-	syncVersions(m, mod)
+	if os.Getenv("USE_DATABASE") == "1" {
+		syncVersions(m, mod)
+	}
 
 	fmt.Println("Module " + m.Name + " is running \n")
 }
