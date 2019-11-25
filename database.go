@@ -1,6 +1,7 @@
 package eather
 
 import (
+	"errors"
 	"log"
 	"os"
 	"sync"
@@ -8,7 +9,10 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql" // Loading mysql dialects
+	_ "github.com/jinzhu/gorm/dialects/mssql"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
+	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
 var (
@@ -33,17 +37,34 @@ func GetDb() *Database {
 }
 
 func initDb() *Database {
-	user := os.Getenv("DATABASE_USER")
-	password := os.Getenv("DATABASE_PASSWORD")
-	dbname := os.Getenv("DATABASE_NAME")
-
-	db, err := gorm.Open("mysql", user+":"+password+"@/"+dbname+"?charset=utf8&parseTime=True&loc=Local")
+	db, err := openDb(os.Getenv("DATABASE"))
 
 	if err != nil {
 		panic("failed to connect database")
 	}
 
 	return &Database{db}
+}
+
+func openDb(dialect string) (*gorm.DB, error) {
+	user := os.Getenv("DATABASE_USER")
+	password := os.Getenv("DATABASE_PASSWORD")
+	dbname := os.Getenv("DATABASE_NAME")
+	host := os.Getenv("DATABASE_HOST")
+	port := os.Getenv("DATABASE_PORT")
+
+	switch dialect {
+	case "mysql":
+		return gorm.Open(dialect, user+":"+password+"@/"+dbname+"?charset=utf8&parseTime=True&loc=Local")
+	case "postgres":
+		return gorm.Open("postgres", "host="+host+" port="+port+" user="+user+" dbname="+dbname+" password="+password)
+	case "sqlite":
+		return gorm.Open("sqlite3", dbname)
+	case "mssql":
+		return gorm.Open("mssql", "sqlserver://"+user+":"+password+"@"+host+":"+port+"?database="+dbname)
+	}
+
+	return nil, errors.New("Dialect not found")
 }
 
 // ModelBase contains common columns for all tables.
