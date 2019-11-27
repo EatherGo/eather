@@ -49,5 +49,6 @@ func launch(conf ConfigInterface) {
 }
 
 func serve(conf ConfigInterface) {
+	fmt.Println("Server running on: http://" + conf.GetServerConf().Addr)
 	log.Fatal(conf.GetServerConf().ListenAndServe())
 }
