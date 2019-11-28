@@ -1,32 +1,25 @@
 # EATHER Project
 Application that loading Go plugins that are created by predefined interface using built-in buildmode=plugin.  
 
-## Overview
-
-### Getting started 
-Simply use the HelloWorld application or start fresh by running
+## Install
+Simply use the HelloWorld application or start fresh by running or get eather command line tools.
 
 ```
-go get -u github.com/EatherGo/eather
+go get -u github.com/EatherGo/cmd/eather
 ```
 
-Then start server
+## Create New Application
 ```
-package main
-
-import (
-	"github.com/EatherGo/eather"
-)
-
-func main() {
-	eather.Start(nil)
-}
-
+eather create -n NewApp
 ```
 
-Copy .env.example to your project as .env with your own settings.
+## Create New Module
+Make sure that you are in your application directory.
+```
+eather module -n EmptyModule
+```
 
-Access http://localhost:8000/ or APP_URL from ENV, and you should see `404 page not found` or `Hello world` and you are ready to start.
+This will create all necessary files for an empty module. New module will be stored to your env variable `CUSTOM_MODULES_DIR`
 
 ## Development
 
