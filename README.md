@@ -299,3 +299,22 @@ if callable := eather.GetRegistry().Get("Empty").GetCallable(); callable != nil 
 	fmt.Println(data)
 }
 ```
+
+#### Add module dependencies 
+
+If you want to make module dependend on another module add dependencies to module.xml
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <name>Empty</name>
+    <version>1.0.0</version>
+    <events>
+        <listener for="test_added" call="added" name="add_some_stuff"></listener>
+        <listener for="test_removed" call="removed" name="remove_some_stuff"></listener>
+    </events>
+    <dependencies>
+        <dependency>ModuleThatNeedToBeLoadedBefore</dependency>
+    </dependencies>
+</module>
+```
+Now module `Empty` will not be loaded until module `ModuleThatNeedToBeLoadedBefore` is loaded.  
