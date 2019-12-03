@@ -59,6 +59,19 @@ Where -f flag is for full module including Controller, Events, Upgrade, Cron, Ca
 eather module -n EmptyModule -c -e -u -cr -ca -m MyModel
 ```
 
+## Enviroment 
+To set your application url set `APP_URL`.
+`FRONTEND_URL` will be added to cors to allow communication with backend
+`DATABASE` set database dialect to load from gorm allowed values: mssql, mysql, postgres, sqlite
+`DATABASE_USER` user database to login
+`DATABASE_PASSWORD` password for database
+`DATABASE_NAME` database name. In sqlite path to sqlite file
+`REBUILD` set to 1 if you want to rebuild all modules before application starts
+`USE_CRONS` set to 1 if you want to start crons after start of application
+`USE_DATABASE` set to 1 if you want to load database
+`CORE_MODULES_DIR` core modules dir is directory where you will have core modules
+`CUSTOM_MODULES_DIR` custom modules dir is directory for custom modules
+
 ## Development
 
 ### Create module
